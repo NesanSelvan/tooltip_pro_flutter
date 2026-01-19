@@ -14,6 +14,8 @@ class TooltipPainter extends CustomPainter {
   final double borderWidth;
   final double borderRadius;
   final double customArrowOffset;
+  final double arrowWidth;
+  final double arrowHeight;
 
   TooltipPainter({
     required this.color,
@@ -28,6 +30,8 @@ class TooltipPainter extends CustomPainter {
     this.borderWidth = 1.0,
     this.borderRadius = 8.0,
     this.customArrowOffset = 0.5,
+    this.arrowWidth = 12.0,
+    this.arrowHeight = 10.0,
   });
 
   @override
@@ -62,58 +66,78 @@ class TooltipPainter extends CustomPainter {
 
   Path _buildPath(Size size) {
     final path = Path();
-    const arrowHeight = 10.0;
-    const arrowWidth = 12.0;
-    final radius = borderRadius;
+    // Use instance variables instead of constants
+    // arrowHeight and arrowWidth are already part of the class
 
-    double arrowPos;
-    // Calculate minimum distance from edges to avoid corner radius clipping
-    final minArrowOffset = radius + arrowWidth / 2;
-
+    double radius = borderRadius;
     if (tooltipDirection == TooltipDirection.left ||
         tooltipDirection == TooltipDirection.right) {
-      final maxPos = size.height - minArrowOffset;
-      switch (arrowDirection) {
-        case TooltipArrowDirection.left:
-          arrowPos = (size.height * 0.2).clamp(minArrowOffset, maxPos);
-          break;
-        case TooltipArrowDirection.right:
-          arrowPos = (size.height * 0.8).clamp(minArrowOffset, maxPos);
-          break;
-        case TooltipArrowDirection.center:
-          arrowPos = size.height * 0.5;
-          break;
-        case TooltipArrowDirection.custom:
-          arrowPos = (size.height * customArrowOffset).clamp(
-            minArrowOffset,
-            maxPos,
-          );
-          break;
-        case TooltipArrowDirection.none:
-          arrowPos = 0;
-          break;
-      }
+      final maxRadius = (size.height - arrowWidth) / 2;
+      if (radius > maxRadius) radius = maxRadius;
+      if (radius < 0) radius = 0;
     } else {
-      final maxPos = size.width - minArrowOffset;
-      switch (arrowDirection) {
-        case TooltipArrowDirection.left:
-          arrowPos = (size.width * 0.2).clamp(minArrowOffset, maxPos);
-          break;
-        case TooltipArrowDirection.right:
-          arrowPos = (size.width * 0.8).clamp(minArrowOffset, maxPos);
-          break;
-        case TooltipArrowDirection.center:
-          arrowPos = size.width * 0.5;
-          break;
-        case TooltipArrowDirection.custom:
-          arrowPos = (size.width * customArrowOffset).clamp(
-            minArrowOffset,
-            maxPos,
-          );
-          break;
-        case TooltipArrowDirection.none:
-          arrowPos = 0;
-          break;
+      final maxRadius = (size.width - arrowWidth) / 2;
+      if (radius > maxRadius) radius = maxRadius;
+      if (radius < 0) radius = 0;
+    }
+
+    double arrowPos;
+    final minArrowOffset = radius + arrowWidth / 2;
+
+    if (size.width < minArrowOffset * 2 &&
+        (tooltipDirection == TooltipDirection.top ||
+            tooltipDirection == TooltipDirection.bottom)) {
+      arrowPos = size.width / 2;
+    } else if (size.height < minArrowOffset * 2 &&
+        (tooltipDirection == TooltipDirection.left ||
+            tooltipDirection == TooltipDirection.right)) {
+      arrowPos = size.height / 2;
+    } else {
+      if (tooltipDirection == TooltipDirection.left ||
+          tooltipDirection == TooltipDirection.right) {
+        final maxPos = size.height - minArrowOffset;
+        switch (arrowDirection) {
+          case TooltipArrowDirection.left:
+            arrowPos = (size.height * 0.2).clamp(minArrowOffset, maxPos);
+            break;
+          case TooltipArrowDirection.right:
+            arrowPos = (size.height * 0.8).clamp(minArrowOffset, maxPos);
+            break;
+          case TooltipArrowDirection.center:
+            arrowPos = size.height * 0.5;
+            break;
+          case TooltipArrowDirection.custom:
+            arrowPos = (size.height * customArrowOffset).clamp(
+              minArrowOffset,
+              maxPos,
+            );
+            break;
+          case TooltipArrowDirection.none:
+            arrowPos = 0;
+            break;
+        }
+      } else {
+        final maxPos = size.width - minArrowOffset;
+        switch (arrowDirection) {
+          case TooltipArrowDirection.left:
+            arrowPos = (size.width * 0.2).clamp(minArrowOffset, maxPos);
+            break;
+          case TooltipArrowDirection.right:
+            arrowPos = (size.width * 0.8).clamp(minArrowOffset, maxPos);
+            break;
+          case TooltipArrowDirection.center:
+            arrowPos = size.width * 0.5;
+            break;
+          case TooltipArrowDirection.custom:
+            arrowPos = (size.width * customArrowOffset).clamp(
+              minArrowOffset,
+              maxPos,
+            );
+            break;
+          case TooltipArrowDirection.none:
+            arrowPos = 0;
+            break;
+        }
       }
     }
 
@@ -326,5 +350,7 @@ class TooltipPainter extends CustomPainter {
       borderColor != oldDelegate.borderColor ||
       borderWidth != oldDelegate.borderWidth ||
       borderRadius != oldDelegate.borderRadius ||
-      customArrowOffset != oldDelegate.customArrowOffset;
+      customArrowOffset != oldDelegate.customArrowOffset ||
+      arrowWidth != oldDelegate.arrowWidth ||
+      arrowHeight != oldDelegate.arrowHeight;
 }

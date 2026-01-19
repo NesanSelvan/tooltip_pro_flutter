@@ -30,15 +30,20 @@ class TooltipController {
     double borderRadius = 8.0,
     double customArrowOffset = 0.5,
     Widget? tooltipContent,
+    Widget Function(BuildContext context, VoidCallback hideTooltip)?
+    tooltipContentBuilder,
     bool blurBackground = false,
     double blurSigma = 5.0,
     Color? blurColor,
     bool excludeChildFromBlur = true,
     Widget? childWidget,
-    Widget Function(BuildContext context)? tooltipBuilder,
+    Widget Function(BuildContext context, VoidCallback hideTooltip)?
+    tooltipBuilder,
     Duration? autoDismiss = const Duration(seconds: 3),
     TooltipSize tooltipSize = const TooltipSize(),
     VoidCallback? onDismiss,
+    double arrowWidth = 12.0,
+    double arrowHeight = 10.0,
   }) {
     hide();
     _onDismiss = onDismiss;
@@ -96,7 +101,7 @@ class TooltipController {
         left: tooltipPosition.dx,
         top: tooltipPosition.dy,
         child: tooltipBuilder != null
-            ? tooltipBuilder(ctx)
+            ? tooltipBuilder(ctx, hide)
             : TooltipContent(
                 tooltipColor: tooltipColor,
                 arrowDirection: arrowDirection,
@@ -111,8 +116,12 @@ class TooltipController {
                 borderColor: borderColor,
                 borderWidth: borderWidth,
                 borderRadius: borderRadius,
+                arrowWidth: arrowWidth,
+                arrowHeight: arrowHeight,
                 customArrowOffset: customArrowOffset,
-                content: tooltipContent,
+                content: tooltipContentBuilder != null
+                    ? tooltipContentBuilder(ctx, hide)
+                    : tooltipContent,
               ),
       ),
     );

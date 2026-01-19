@@ -50,43 +50,26 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            TooltipTarget.minimal(
+              text: "Counter: $_counter",
+              child: Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: TooltipTarget(
-        tooltipHeight: 50,
-        tooltipWidth: 100,
-        spacing: 40,
-        horizontalPadding: 20,
-        verticalPadding: 20,
-        tooltipColor: Colors.white,
-        direction: TooltipDirection.top,
-        arrowDirection: TooltipArrowDirection.custom,
-        // customArrowOffset: 0.4,
-        autoDismiss: const Duration(seconds: 2),
+      floatingActionButton: TooltipTarget.minimal(
+        spacing: 30,
+
+        // arrowDirection: TooltipArrowDirection.right,
+        text: "Add Item",
+
+        autoDismiss: Duration(seconds: 3),
+        border: TooltipBorderConfig(radius: 100, enabled: true),
+        direction: TooltipDirection.left,
         onPressed: _incrementCounter,
-        tooltipContent: const Text("data"),
-        border: const TooltipBorderConfig(enabled: true, radius: 10),
-        shadow: const TooltipShadowConfig(
-          enabled: true,
-          elevation: 0.4,
-          blurRadius: 2,
-        ),
-        // tooltipBuilder: (context) {
-        //   return Material(
-        //     child: Container(color: Colors.red, child: const Text('Hello')),
-        //   );
-        // },
-        blur: TooltipBlurConfig(
-          enabled: true,
-          sigma: 0,
-          color: Colors.black.withValues(alpha: 0.5),
-          includeChild: false,
-        ),
         child: FloatingActionButton(
           onPressed: null,
           child: const Icon(Icons.add),

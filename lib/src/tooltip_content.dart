@@ -17,6 +17,8 @@ class TooltipContent extends StatelessWidget {
   final double borderWidth;
   final double borderRadius;
   final double customArrowOffset;
+  final double arrowWidth;
+  final double arrowHeight;
   final Widget? content;
 
   const TooltipContent({
@@ -35,6 +37,8 @@ class TooltipContent extends StatelessWidget {
     this.borderWidth = 1.0,
     this.borderRadius = 8.0,
     this.customArrowOffset = 0.5,
+    this.arrowWidth = 12.0,
+    this.arrowHeight = 10.0,
     this.content,
   });
 
@@ -76,6 +80,8 @@ class TooltipContent extends StatelessWidget {
           borderWidth: borderWidth,
           borderRadius: borderRadius,
           customArrowOffset: customArrowOffset,
+          arrowWidth: arrowWidth,
+          arrowHeight: arrowHeight,
         ),
         child: Container(
           height: height,
