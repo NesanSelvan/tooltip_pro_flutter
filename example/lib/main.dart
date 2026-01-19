@@ -57,27 +57,36 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      // Simply wrap your FloatingActionButton with TooltipTarget!
       floatingActionButton: TooltipTarget(
         tooltipHeight: 50,
-        tooltipWidth: 50,
+        tooltipWidth: 100,
         spacing: 40,
+        horizontalPadding: 20,
+        verticalPadding: 20,
         tooltipColor: Colors.white,
         direction: TooltipDirection.top,
-        arrowDirection: TooltipArrowDirection.center,
-        autoDismiss: const Duration(seconds: 6),
+        arrowDirection: TooltipArrowDirection.custom,
+        // customArrowOffset: 0.4,
+        autoDismiss: const Duration(seconds: 2),
         onPressed: _incrementCounter,
+        tooltipContent: const Text("data"),
+        border: const TooltipBorderConfig(enabled: true, radius: 10),
         shadow: const TooltipShadowConfig(
           enabled: true,
           elevation: 0.4,
           blurRadius: 2,
         ),
-        // blur: TooltipBlurConfig(
-        //   enabled: true,
-        //   sigma: 0,
-        //   color: Colors.black.withValues(alpha: 0.5),
-        //   includeChild: false,
-        // ),
+        // tooltipBuilder: (context) {
+        //   return Material(
+        //     child: Container(color: Colors.red, child: const Text('Hello')),
+        //   );
+        // },
+        blur: TooltipBlurConfig(
+          enabled: true,
+          sigma: 0,
+          color: Colors.black.withValues(alpha: 0.5),
+          includeChild: false,
+        ),
         child: FloatingActionButton(
           onPressed: null,
           child: const Icon(Icons.add),

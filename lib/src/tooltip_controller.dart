@@ -24,11 +24,18 @@ class TooltipController {
     Color? shadowColor,
     double shadowElevation = 2.0,
     double shadowBlurRadius = 4.0,
+    bool enableBorder = false,
+    Color borderColor = Colors.black,
+    double borderWidth = 1.0,
+    double borderRadius = 8.0,
+    double customArrowOffset = 0.5,
+    Widget? tooltipContent,
     bool blurBackground = false,
     double blurSigma = 5.0,
     Color? blurColor,
     bool excludeChildFromBlur = true,
     Widget? childWidget,
+    Widget Function(BuildContext context)? tooltipBuilder,
     Duration? autoDismiss = const Duration(seconds: 3),
     TooltipSize tooltipSize = const TooltipSize(),
     VoidCallback? onDismiss,
@@ -48,10 +55,13 @@ class TooltipController {
       position.dy + targetSize.height / 2,
     );
 
+    final screenSize = MediaQuery.of(context).size;
+
     final tooltipPosition = _calculatePosition(
       centerPosition,
       direction,
       tooltipSize,
+      screenSize,
     );
 
     if (blurBackground) {
@@ -82,20 +92,28 @@ class TooltipController {
     }
 
     _overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
+      builder: (ctx) => Positioned(
         left: tooltipPosition.dx,
         top: tooltipPosition.dy,
-        child: TooltipContent(
-          tooltipColor: tooltipColor,
-          arrowDirection: arrowDirection,
-          height: tooltipSize.height,
-          width: tooltipSize.width,
-          direction: direction,
-          enableShadow: enableShadow,
-          shadowColor: shadowColor,
-          shadowElevation: shadowElevation,
-          shadowBlurRadius: shadowBlurRadius,
-        ),
+        child: tooltipBuilder != null
+            ? tooltipBuilder(ctx)
+            : TooltipContent(
+                tooltipColor: tooltipColor,
+                arrowDirection: arrowDirection,
+                height: tooltipSize.height,
+                width: tooltipSize.width,
+                direction: direction,
+                enableShadow: enableShadow,
+                shadowColor: shadowColor,
+                shadowElevation: shadowElevation,
+                shadowBlurRadius: shadowBlurRadius,
+                enableBorder: enableBorder,
+                borderColor: borderColor,
+                borderWidth: borderWidth,
+                borderRadius: borderRadius,
+                customArrowOffset: customArrowOffset,
+                content: tooltipContent,
+              ),
       ),
     );
 
@@ -123,29 +141,39 @@ class TooltipController {
     Offset targetCenter,
     TooltipDirection direction,
     TooltipSize size,
+    Size screenSize,
   ) {
+    double x, y;
+
     switch (direction) {
       case TooltipDirection.top:
-        return Offset(
-          targetCenter.dx - size.width / 2,
-          targetCenter.dy - size.height - size.spacing,
-        );
+        x = targetCenter.dx - size.width / 2;
+        y = targetCenter.dy - size.height - size.spacing;
+        break;
       case TooltipDirection.bottom:
-        return Offset(
-          targetCenter.dx - size.width / 2,
-          targetCenter.dy + size.spacing,
-        );
+        x = targetCenter.dx - size.width / 2;
+        y = targetCenter.dy + size.spacing;
+        break;
       case TooltipDirection.left:
-        return Offset(
-          targetCenter.dx - size.width - size.spacing,
-          targetCenter.dy - size.height / 2,
-        );
+        x = targetCenter.dx - size.width - size.spacing;
+        y = targetCenter.dy - size.height / 2;
+        break;
       case TooltipDirection.right:
-        return Offset(
-          targetCenter.dx + size.spacing,
-          targetCenter.dy - size.height / 2,
-        );
+        x = targetCenter.dx + size.spacing;
+        y = targetCenter.dy - size.height / 2;
+        break;
     }
+
+    // Apply padding constraints
+    final minX = size.horizontalPadding;
+    final maxX = screenSize.width - size.width - size.horizontalPadding;
+    final minY = size.verticalPadding;
+    final maxY = screenSize.height - size.height - size.verticalPadding;
+
+    x = x.clamp(minX, maxX);
+    y = y.clamp(minY, maxY);
+
+    return Offset(x, y);
   }
 
   void dispose() {

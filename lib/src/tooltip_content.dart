@@ -12,6 +12,12 @@ class TooltipContent extends StatelessWidget {
   final Color? shadowColor;
   final double shadowElevation;
   final double shadowBlurRadius;
+  final bool enableBorder;
+  final Color borderColor;
+  final double borderWidth;
+  final double borderRadius;
+  final double customArrowOffset;
+  final Widget? content;
 
   const TooltipContent({
     super.key,
@@ -24,6 +30,12 @@ class TooltipContent extends StatelessWidget {
     this.shadowColor,
     this.shadowElevation = 2.0,
     this.shadowBlurRadius = 4.0,
+    this.enableBorder = false,
+    this.borderColor = Colors.black,
+    this.borderWidth = 1.0,
+    this.borderRadius = 8.0,
+    this.customArrowOffset = 0.5,
+    this.content,
   });
 
   @override
@@ -48,17 +60,30 @@ class TooltipContent extends StatelessWidget {
         break;
     }
 
-    return CustomPaint(
-      painter: TooltipPainter(
-        color: effectiveColor,
-        arrowDirection: arrowDirection,
-        tooltipDirection: direction,
-        enableShadow: enableShadow,
-        shadowColor: effectiveShadowColor,
-        shadowElevation: shadowElevation,
-        shadowBlurRadius: shadowBlurRadius,
+    return Material(
+      type: MaterialType.transparency,
+      child: CustomPaint(
+        painter: TooltipPainter(
+          color: effectiveColor,
+          arrowDirection: arrowDirection,
+          tooltipDirection: direction,
+          enableShadow: enableShadow,
+          shadowColor: effectiveShadowColor,
+          shadowElevation: shadowElevation,
+          shadowBlurRadius: shadowBlurRadius,
+          enableBorder: enableBorder,
+          borderColor: borderColor,
+          borderWidth: borderWidth,
+          borderRadius: borderRadius,
+          customArrowOffset: customArrowOffset,
+        ),
+        child: Container(
+          height: height,
+          width: width,
+          padding: padding,
+          child: content != null ? Center(child: content) : null,
+        ),
       ),
-      child: Container(height: height, width: width, padding: padding),
     );
   }
 }
