@@ -18,7 +18,7 @@ Add `tooltip_plus` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  tooltip_plus: ^0.0.1
+  tooltip_plus_flutter: ^0.0.1
 ```
 
 ## Usage

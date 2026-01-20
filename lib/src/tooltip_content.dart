@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tooltip_plus/src/tooltip_enums.dart';
-import 'package:tooltip_plus/src/tooltip_painter.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_enums.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_painter.dart';
 
 class TooltipContent extends StatelessWidget {
   final double height;

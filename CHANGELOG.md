@@ -1,10 +1,6 @@
-## 0.0.2
-
-* Documentation updates.
-
 ## 0.0.1
 
-* Initial release of `tooltip_plus`.
+* Initial release of `tooltip_plus_flutter`.
 * Features included:
     * Rich content support (text, icons, custom widgets).
     * Flexible positioning (top, bottom, left, right).

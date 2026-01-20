@@ -1,4 +1,4 @@
-import 'package:tooltip_plus/tooltip_plus.dart';
+import 'package:tooltip_plus_flutter/tooltip_plus_flutter.dart';
 import 'package:flutter/material.dart';
 
 void main() {

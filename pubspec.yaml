@@ -1,6 +1,6 @@
-name: tooltip_plus
+name: tooltip_plus_flutter
 description: A powerful and flexible Flutter package for creating highly customizable tooltips with rich content, shadows, blurs, and precise positioning control.
-version: 0.0.2
+version: 0.0.1
 repository: https://github.com/NesanSelvan/tooltip_plus
 
 environment:

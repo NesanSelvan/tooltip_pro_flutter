@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:tooltip_plus/src/tooltip_content.dart';
-import 'package:tooltip_plus/src/tooltip_enums.dart';
-import 'package:tooltip_plus/src/tooltip_size.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_content.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_enums.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_size.dart';
 
 class TooltipController {
   OverlayEntry? _backgroundEntry;

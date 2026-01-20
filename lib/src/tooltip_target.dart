@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tooltip_plus/src/tooltip_config.dart';
-import 'package:tooltip_plus/src/tooltip_controller.dart';
-import 'package:tooltip_plus/src/tooltip_enums.dart';
-import 'package:tooltip_plus/src/tooltip_size.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_config.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_controller.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_enums.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_size.dart';
 
 class TooltipTarget extends StatefulWidget {
   final Widget child;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tooltip_plus/src/tooltip_enums.dart';
+import 'package:tooltip_plus_flutter/src/tooltip_enums.dart';
 
 class TooltipPainter extends CustomPainter {
   final Color color;
