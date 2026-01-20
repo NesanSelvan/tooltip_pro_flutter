@@ -66,9 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // arrowDirection: TooltipArrowDirection.right,
         text: "Add Item",
 
+        border: TooltipBorderConfig(
+          enabled: true,
+          color: Colors.black,
+          width: 1,
+          radius: 100,
+        ),
         autoDismiss: Duration(seconds: 3),
-        border: TooltipBorderConfig(radius: 100, enabled: true),
-        direction: TooltipDirection.left,
+        // direction: TooltipDirection.left,
         onPressed: _incrementCounter,
         child: FloatingActionButton(
           onPressed: null,

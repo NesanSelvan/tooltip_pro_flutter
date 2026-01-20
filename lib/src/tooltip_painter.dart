@@ -70,16 +70,42 @@ class TooltipPainter extends CustomPainter {
     // arrowHeight and arrowWidth are already part of the class
 
     double radius = borderRadius;
-    if (tooltipDirection == TooltipDirection.left ||
-        tooltipDirection == TooltipDirection.right) {
-      final maxRadius = (size.height - arrowWidth) / 2;
-      if (radius > maxRadius) radius = maxRadius;
-      if (radius < 0) radius = 0;
+
+    // Calculate the available space for the body (excluding arrow if it extends the dimension)
+    double bodyHeight = size.height;
+    double bodyWidth = size.width;
+
+    if (tooltipDirection == TooltipDirection.top ||
+        tooltipDirection == TooltipDirection.bottom) {
+      bodyHeight -= arrowHeight;
     } else {
-      final maxRadius = (size.width - arrowWidth) / 2;
-      if (radius > maxRadius) radius = maxRadius;
-      if (radius < 0) radius = 0;
+      bodyWidth -= arrowHeight;
     }
+
+    // Radius cannot exceed half of the shortest dimension of the body
+    final maxRadius = (bodyHeight < bodyWidth ? bodyHeight : bodyWidth) / 2;
+
+    if (radius > maxRadius) radius = maxRadius;
+    if (radius < 0) radius = 0;
+
+    // Further constrain radius if it interferes with the arrow on the side it resides
+    if (tooltipDirection == TooltipDirection.top ||
+        tooltipDirection == TooltipDirection.bottom) {
+      // Arrow is on the horizontal edge (width). Check if arrow fits.
+      // The arrow sits in the middle. We need (width/2 - arrowWidth/2) >= radius
+      // Actually, simplified: radius + arrowWidth/2 cannot exceed width/2 (if centered)
+      // Let's just blindly cap it safer:
+      if (radius > (bodyWidth - arrowWidth) / 2) {
+        radius = (bodyWidth - arrowWidth) / 2;
+      }
+    } else {
+      // Arrow is on the vertical edge (height)
+      if (radius > (bodyHeight - arrowWidth) / 2) {
+        radius = (bodyHeight - arrowWidth) / 2;
+      }
+    }
+
+    if (radius < 0) radius = 0;
 
     double arrowPos;
     final minArrowOffset = radius + arrowWidth / 2;

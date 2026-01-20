@@ -1,3 +1,7 @@
+## 0.0.3
+
+* **Bug Fix**: Fixed rendering artifacts when `borderRadius` is large relative to the tooltip size. Correctly clamps radius to prevent path inversions.
+
 ## 0.0.2
 
 * **Breaking Change**: Renamed `TooltipTarget` to `TooltipPro` to match package name.
