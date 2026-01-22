@@ -2,6 +2,8 @@
 
 A powerful and flexible tooltip package for Flutter that goes beyond simple text. Create beautiful, highly customizable tooltips with rich content, shadows, blurs, and precise control over positioning and styling.
 
+🚀 **See it in action:** Used in [NutriScan](https://nutriscan.app/)
+
 | | | |
 |:---:|:---:|:---:|
 | ![Tooltip Demo 1](screenshots/tooltip_demo.jpeg) | ![Tooltip Demo 2](screenshots/demo_3.jpeg) | ![Tooltip Demo 3](screenshots/demo_4.jpeg) |
