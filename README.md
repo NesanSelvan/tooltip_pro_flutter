@@ -6,7 +6,7 @@ A powerful and flexible tooltip package for Flutter that goes beyond simple text
 
 | | | |
 |:---:|:---:|:---:|
-| ![Tooltip Demo 1](screenshots/tooltip_demo.jpeg) | ![Tooltip Demo 2](screenshots/demo_3.jpeg) | ![Tooltip Demo 3](screenshots/demo_4.jpeg) |
+| ![Tooltip Demo 1](https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/tooltip_demo.jpeg) | ![Tooltip Demo 2](https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_3.jpeg) | ![Tooltip Demo 3](https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_4.jpeg) |
 
 ## Features
 

@@ -1,3 +1,7 @@
+## 0.0.7
+
+* **Fix**: Updated README image links to use absolute GitHub URLs to ensure correct rendering on pub.dev.
+
 ## 0.0.6
 
 * **Documentation**: Updated README with comprehensive usage examples and API reference.
