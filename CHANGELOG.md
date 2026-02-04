@@ -1,3 +1,9 @@
+## 0.0.9
+
+* **Feature**: Added trigger modes for tap/hold behavior.
+* **Feature**: Added configurable animations (type, duration, curve) for tooltip display.
+* **Feature**: Added animation config class and enums for animation types/curves.
+
 ## 0.0.8
 
 * **Fix**: Fixed cumulative layout shift in README where images would initially load at full width.
