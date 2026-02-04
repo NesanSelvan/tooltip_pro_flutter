@@ -1,5 +1,5 @@
 import 'package:tooltip_pro/tooltip_pro.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide TooltipTriggerMode;
 
 void main() {
   runApp(const MyApp());
@@ -51,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             const Text('You have pushed the button this many times:'),
             TooltipPro.minimal(
-              showAtTapPosition: true,
+              // autoDismiss: Duration(seconds: 3),
+              triggerMode: TooltipProTriggerMode.tap,
+              showAtTapPosition: false,
               text: "Counter: $_counter",
               child: Text(
                 '$_counter',

@@ -26,6 +26,7 @@ class TooltipPro extends StatefulWidget {
   final TooltipBorderConfig border;
   final Widget? tooltipContent;
   final bool showAtTapPosition;
+  final TooltipProTriggerMode triggerMode;
 
   final Widget Function(BuildContext context, VoidCallback hideTooltip)?
   tooltipContentBuilder;
@@ -56,6 +57,7 @@ class TooltipPro extends StatefulWidget {
     this.arrowWidth = 12.0,
     this.arrowHeight = 10.0,
     this.showAtTapPosition = false,
+    this.triggerMode = TooltipProTriggerMode.tap,
   });
 
   /// A minimal tooltip with just text.
@@ -81,11 +83,13 @@ class TooltipPro extends StatefulWidget {
     double arrowWidth = 12.0,
     double arrowHeight = 10.0,
     bool showAtTapPosition = false,
+    TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
   }) {
     return TooltipPro(
       key: key,
       direction: direction,
       showAtTapPosition: showAtTapPosition,
+      triggerMode: triggerMode,
       tooltipColor: tooltipColor ?? const Color(0xFF1E1E1E),
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
@@ -137,11 +141,13 @@ class TooltipPro extends StatefulWidget {
     double arrowWidth = 12.0,
     double arrowHeight = 10.0,
     bool showAtTapPosition = false,
+    TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
   }) {
     return TooltipPro(
       key: key,
       direction: direction,
       showAtTapPosition: showAtTapPosition,
+      triggerMode: triggerMode,
       tooltipColor: tooltipColor ?? Colors.white,
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
@@ -243,11 +249,13 @@ class TooltipPro extends StatefulWidget {
     double arrowWidth = 12.0,
     double arrowHeight = 10.0,
     bool showAtTapPosition = false,
+    TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
   }) {
     return TooltipPro(
       key: key,
       direction: direction,
       showAtTapPosition: showAtTapPosition,
+      triggerMode: triggerMode,
       tooltipColor: tooltipColor ?? const Color(0xFFFEF2F2),
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
@@ -325,13 +333,13 @@ class TooltipProState extends State<TooltipPro> {
     _controller.hide();
   }
 
-  void _showTooltip() {
+  void _showTooltip({bool fromHold = false}) {
     _controller.show(
       context: context,
       targetKey: _targetKey,
       direction: widget.direction,
       arrowDirection: widget.arrowDirection,
-      autoDismiss: widget.autoDismiss,
+      autoDismiss: fromHold ? null : widget.autoDismiss,
       tooltipColor: widget.tooltipColor,
       enableShadow: widget.shadow.enabled,
       shadowColor: widget.shadow.color,
@@ -366,17 +374,28 @@ class TooltipProState extends State<TooltipPro> {
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
+    final bool supportsTap =
+        widget.triggerMode == TooltipProTriggerMode.tap ||
+        widget.triggerMode == TooltipProTriggerMode.tapAndHold;
+    final bool supportsHold =
+        widget.triggerMode == TooltipProTriggerMode.hold ||
+        widget.triggerMode == TooltipProTriggerMode.tapAndHold;
+
+    return GestureDetector(
       key: _targetKey,
-      onPointerDown: (event) {
-        _tapPosition = event.position;
+      behavior: HitTestBehavior.translucent,
+      onTapDown: (details) {
+        _tapPosition = details.globalPosition;
       },
-      onPointerUp: (event) {
-        if (_tapPosition != null &&
-            (event.position - _tapPosition!).distance < 5.0) {
-          _showTooltip();
-        }
-      },
+      onTap: supportsTap ? _showTooltip : null,
+      onLongPressStart: supportsHold
+          ? (details) {
+              _tapPosition = details.globalPosition;
+              _showTooltip(fromHold: true);
+            }
+          : null,
+      onLongPressEnd: supportsHold ? (_) => hideTooltip() : null,
+      onLongPressCancel: supportsHold ? hideTooltip : null,
       child: widget.child,
     );
   }

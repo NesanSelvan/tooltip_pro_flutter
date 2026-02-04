@@ -13,6 +13,7 @@ A powerful and flexible tooltip package for Flutter that goes beyond simple text
 *   ✨ **Rich Content Support**: Create tooltips with titles, descriptions, icons, or any custom widget.
 *   📍 **Flexible Positioning**: Position tooltips TOP, BOTTOM, LEFT, or RIGHT of the target.
 *   👆 **Tap Position**: Option to show the tooltip exactly where the user tapped (`showAtTapPosition`).
+*   ✋ **Hold to Show**: Show tooltips on hold or tap (`triggerMode`).
 *   🏹 **Advanced Arrow Control**:
     *   Directions: `left`, `right`, `center`, `none`, or `custom`.
     *   Full sizing control: `width`, `height`, and `offset`.
@@ -110,6 +111,30 @@ TooltipPro(
 )
 ```
 
+#### ✋ Hold to Show
+Show the tooltip only while the user is holding the widget.
+
+```dart
+TooltipPro(
+  triggerMode: TooltipProTriggerMode.hold,
+  child: Container(
+    height: 60,
+    width: 120,
+    color: Colors.grey,
+  ),
+)
+```
+
+#### 🫳 Tap + Hold
+Allow both tap and long-press triggers.
+
+```dart
+TooltipPro(
+  triggerMode: TooltipProTriggerMode.tapAndHold,
+  child: Icon(Icons.info),
+)
+```
+
 #### 🎨 Border & Shadows
 Create premium looking UI elements.
 
@@ -158,10 +183,11 @@ TooltipPro(
 
 | Property | Type | Default | Use Case |
 |---|---|---|---|
-| `child` | `Widget` | **required** | The widget that triggers the tooltip on tap. |
+| `child` | `Widget` | **required** | The widget that triggers the tooltip on tap or hold. |
 | `direction` | `TooltipDirection` | `top` | `top`, `bottom`, `left`, `right`. Overall position relative to child. |
 | `arrowDirection` | `TooltipArrowDirection` | `center` | `center`, `start`, `end`, `none`, `custom`. Position of the arrow on the tooltip bubble. |
 | `showAtTapPosition`| `bool` | `false` | If true, tooltip appears exactly where you tapped, ignoring `direction` slightly to align with touch. |
+| `triggerMode`| `TooltipProTriggerMode` | `tap` | `tap`, `hold`, `tapAndHold`. Hold disables auto-dismiss. |
 | `customArrowOffset`| `double` | `0.5` | Used when `arrowDirection` is `custom`. `0.0` to `1.0`. |
 | `arrowWidth` | `double` | `12.0` | Width of the arrow base. |
 | `arrowHeight` | `double` | `10.0` | Height (length) of the arrow. |
@@ -205,5 +231,3 @@ TooltipBlurConfig({
   bool includeChild = false,
 })
 ```
-
-
