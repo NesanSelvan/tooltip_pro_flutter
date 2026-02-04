@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tooltip_pro/src/tooltip_enums.dart';
 
 class TooltipShadowConfig {
   final bool enabled;
@@ -46,4 +47,18 @@ class TooltipBorderConfig {
   });
 
   static const none = TooltipBorderConfig();
+}
+
+class TooltipAnimationConfig {
+  final TooltipAnimationType type;
+  final Duration duration;
+  final TooltipAnimationCurve curve;
+
+  const TooltipAnimationConfig({
+    this.type = TooltipAnimationType.none,
+    this.duration = const Duration(milliseconds: 200),
+    this.curve = TooltipAnimationCurve.easeOut,
+  });
+
+  static const none = TooltipAnimationConfig();
 }

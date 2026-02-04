@@ -51,8 +51,13 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             const Text('You have pushed the button this many times:'),
             TooltipPro.minimal(
-              // autoDismiss: Duration(seconds: 3),
+              autoDismiss: Duration(seconds: 3),
               triggerMode: TooltipProTriggerMode.tap,
+              animation: TooltipAnimationConfig(
+                type: TooltipAnimationType.scale,
+                duration: Duration(milliseconds: 1000),
+                curve: TooltipAnimationCurve.easeOut,
+              ),
               showAtTapPosition: false,
               text: "Counter: $_counter",
               child: Text(

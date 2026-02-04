@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tooltip_pro/src/tooltip_content.dart';
+import 'package:tooltip_pro/src/tooltip_config.dart';
 import 'package:tooltip_pro/src/tooltip_enums.dart';
 import 'package:tooltip_pro/src/tooltip_size.dart';
 
@@ -30,6 +31,7 @@ class TooltipController {
     Color borderColor = Colors.black,
     double borderWidth = 1.0,
     double borderRadius = 8.0,
+    TooltipAnimationConfig animation = const TooltipAnimationConfig(),
     double customArrowOffset = 0.5,
     Widget? tooltipContent,
     Widget Function(BuildContext context, VoidCallback hideTooltip)?
@@ -106,29 +108,28 @@ class TooltipController {
       builder: (ctx) => Positioned(
         left: tooltipPosition.dx,
         top: tooltipPosition.dy,
-        child: tooltipBuilder != null
-            ? tooltipBuilder(ctx, hide)
-            : TooltipContent(
-                tooltipColor: tooltipColor,
-                arrowDirection: arrowDirection,
-                height: tooltipSize.height,
-                width: tooltipSize.width,
-                direction: direction,
-                enableShadow: enableShadow,
-                shadowColor: shadowColor,
-                shadowElevation: shadowElevation,
-                shadowBlurRadius: shadowBlurRadius,
-                enableBorder: enableBorder,
-                borderColor: borderColor,
-                borderWidth: borderWidth,
-                borderRadius: borderRadius,
-                arrowWidth: arrowWidth,
-                arrowHeight: arrowHeight,
-                customArrowOffset: customArrowOffset,
-                content: tooltipContentBuilder != null
-                    ? tooltipContentBuilder(ctx, hide)
-                    : tooltipContent,
-              ),
+        child: _buildAnimatedTooltip(
+          context: ctx,
+          tooltipBuilder: tooltipBuilder,
+          animation: animation,
+          direction: direction,
+          tooltipContent: tooltipContent,
+          tooltipContentBuilder: tooltipContentBuilder,
+          tooltipColor: tooltipColor,
+          arrowDirection: arrowDirection,
+          tooltipSize: tooltipSize,
+          enableShadow: enableShadow,
+          shadowColor: shadowColor,
+          shadowElevation: shadowElevation,
+          shadowBlurRadius: shadowBlurRadius,
+          enableBorder: enableBorder,
+          borderColor: borderColor,
+          borderWidth: borderWidth,
+          borderRadius: borderRadius,
+          arrowWidth: arrowWidth,
+          arrowHeight: arrowHeight,
+          customArrowOffset: customArrowOffset,
+        ),
       ),
     );
 
@@ -195,5 +196,119 @@ class TooltipController {
 
   void dispose() {
     hide();
+  }
+
+  Widget _buildAnimatedTooltip({
+    required BuildContext context,
+    required TooltipAnimationConfig animation,
+    required TooltipDirection direction,
+    required TooltipArrowDirection arrowDirection,
+    required TooltipSize tooltipSize,
+    required bool enableShadow,
+    required Color? shadowColor,
+    required double shadowElevation,
+    required double shadowBlurRadius,
+    required bool enableBorder,
+    required Color borderColor,
+    required double borderWidth,
+    required double borderRadius,
+    required double arrowWidth,
+    required double arrowHeight,
+    required double customArrowOffset,
+    required Widget? tooltipContent,
+    required Widget Function(BuildContext context, VoidCallback hideTooltip)?
+        tooltipContentBuilder,
+    required Widget Function(BuildContext context, VoidCallback hideTooltip)?
+        tooltipBuilder,
+    required Color? tooltipColor,
+  }) {
+    final Widget content = tooltipBuilder != null
+        ? tooltipBuilder(context, hide)
+        : TooltipContent(
+            tooltipColor: tooltipColor,
+            arrowDirection: arrowDirection,
+            height: tooltipSize.height,
+            width: tooltipSize.width,
+            direction: direction,
+            enableShadow: enableShadow,
+            shadowColor: shadowColor,
+            shadowElevation: shadowElevation,
+            shadowBlurRadius: shadowBlurRadius,
+            enableBorder: enableBorder,
+            borderColor: borderColor,
+            borderWidth: borderWidth,
+            borderRadius: borderRadius,
+            arrowWidth: arrowWidth,
+            arrowHeight: arrowHeight,
+            customArrowOffset: customArrowOffset,
+            content: tooltipContentBuilder != null
+                ? tooltipContentBuilder(context, hide)
+                : tooltipContent,
+          );
+
+    if (animation.type == TooltipAnimationType.none) {
+      return content;
+    }
+
+    return TweenAnimationBuilder<double>(
+      duration: animation.duration,
+      curve: _resolveCurve(animation.curve),
+      tween: Tween(begin: 0, end: 1),
+      builder: (context, value, child) {
+        final double clampedValue = value.clamp(0.0, 1.0);
+        switch (animation.type) {
+          case TooltipAnimationType.fade:
+            return Opacity(opacity: clampedValue, child: child);
+          case TooltipAnimationType.scale:
+            return Transform.scale(
+              scale: 0.95 + (0.05 * clampedValue),
+              child: child,
+            );
+          case TooltipAnimationType.fadeScale:
+            return Opacity(
+              opacity: clampedValue,
+              child: Transform.scale(
+                scale: 0.95 + (0.05 * clampedValue),
+                child: child,
+              ),
+            );
+          case TooltipAnimationType.slide:
+            final offset = _slideOffset(direction);
+            return Transform.translate(
+              offset: Offset(
+                offset.dx * (1 - clampedValue),
+                offset.dy * (1 - clampedValue),
+              ),
+              child: child,
+            );
+          case TooltipAnimationType.none:
+            return child!;
+        }
+      },
+      child: content,
+    );
+  }
+
+  Offset _slideOffset(TooltipDirection direction) {
+    const distance = 8.0;
+    switch (direction) {
+      case TooltipDirection.top:
+        return const Offset(0, distance);
+      case TooltipDirection.bottom:
+        return const Offset(0, -distance);
+      case TooltipDirection.left:
+        return const Offset(distance, 0);
+      case TooltipDirection.right:
+        return const Offset(-distance, 0);
+    }
+  }
+
+  Curve _resolveCurve(TooltipAnimationCurve curve) {
+    switch (curve) {
+      case TooltipAnimationCurve.easeIn:
+        return Curves.easeIn;
+      case TooltipAnimationCurve.easeOut:
+        return Curves.easeOut;
+    }
   }
 }

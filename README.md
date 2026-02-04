@@ -17,6 +17,7 @@ A powerful and flexible tooltip package for Flutter that goes beyond simple text
 *   🏹 **Advanced Arrow Control**:
     *   Directions: `left`, `right`, `center`, `none`, or `custom`.
     *   Full sizing control: `width`, `height`, and `offset`.
+*   🎬 **Animated Show**: Choose fade, scale, slide, or combo.
 *   🎨 **Premium Styling**:
     *   **Borders**: Color, width, and radius.
     *   **Shadows**: Color, elevation, and blur.
@@ -193,6 +194,7 @@ TooltipPro(
 | `arrowHeight` | `double` | `10.0` | Height (length) of the arrow. |
 | `tooltipHeight` | `double` | `50.0` | Fixed height of the tooltip. |
 | `tooltipWidth` | `double` | `50.0` | Fixed width of the tooltip. |
+| `animation` | `TooltipAnimationConfig` | `const` | Configure show animation type, duration, and curve. |
 | `spacing` | `double` | `10.0` | Gap between the target widget and the tooltip. |
 | `autoDismiss` | `Duration?` | `3s` | How long before it disappears. Set `null` to disable. |
 | `onPressed` | `VoidCallback?` | `null` | Additional callback when target is tapped. |
@@ -229,5 +231,14 @@ TooltipBlurConfig({
   double sigma = 5.0,
   Color? color,       // Tint logic
   bool includeChild = false,
+})
+```
+
+**TooltipAnimationConfig**
+```dart
+TooltipAnimationConfig({
+  TooltipAnimationType type = TooltipAnimationType.none,
+  Duration duration = const Duration(milliseconds: 200),
+  TooltipAnimationCurve curve = TooltipAnimationCurve.easeOut,
 })
 ```

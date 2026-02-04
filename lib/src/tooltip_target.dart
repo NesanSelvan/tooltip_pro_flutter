@@ -24,6 +24,7 @@ class TooltipPro extends StatefulWidget {
   final TooltipShadowConfig shadow;
   final TooltipBlurConfig blur;
   final TooltipBorderConfig border;
+  final TooltipAnimationConfig animation;
   final Widget? tooltipContent;
   final bool showAtTapPosition;
   final TooltipProTriggerMode triggerMode;
@@ -51,6 +52,7 @@ class TooltipPro extends StatefulWidget {
     this.shadow = const TooltipShadowConfig(),
     this.blur = const TooltipBlurConfig(),
     this.border = const TooltipBorderConfig(),
+    this.animation = const TooltipAnimationConfig(),
     this.tooltipContent,
     this.tooltipContentBuilder,
     this.tooltipBuilder,
@@ -79,6 +81,7 @@ class TooltipPro extends StatefulWidget {
     TooltipShadowConfig? shadow,
     TooltipBlurConfig blur = const TooltipBlurConfig(),
     TooltipBorderConfig? border,
+    TooltipAnimationConfig animation = const TooltipAnimationConfig(),
     double customArrowOffset = 0.5,
     double arrowWidth = 12.0,
     double arrowHeight = 10.0,
@@ -102,6 +105,7 @@ class TooltipPro extends StatefulWidget {
       onPressed: onPressed,
       blur: blur,
       border: border ?? const TooltipBorderConfig(radius: 4),
+      animation: animation,
       tooltipContent: Text(
         text,
         style: const TextStyle(color: Colors.white, fontSize: 12),
@@ -137,6 +141,7 @@ class TooltipPro extends StatefulWidget {
     TooltipShadowConfig? shadow,
     TooltipBlurConfig blur = const TooltipBlurConfig(),
     TooltipBorderConfig? border,
+    TooltipAnimationConfig animation = const TooltipAnimationConfig(),
     double customArrowOffset = 0.5,
     double arrowWidth = 12.0,
     double arrowHeight = 10.0,
@@ -167,6 +172,7 @@ class TooltipPro extends StatefulWidget {
             width: 1,
             radius: 12,
           ),
+      animation: animation,
       shadow:
           shadow ??
           TooltipShadowConfig(
@@ -245,6 +251,7 @@ class TooltipPro extends StatefulWidget {
     TooltipShadowConfig? shadow,
     TooltipBlurConfig blur = const TooltipBlurConfig(),
     TooltipBorderConfig? border,
+    TooltipAnimationConfig animation = const TooltipAnimationConfig(),
     double customArrowOffset = 0.2,
     double arrowWidth = 12.0,
     double arrowHeight = 10.0,
@@ -275,6 +282,7 @@ class TooltipPro extends StatefulWidget {
             width: 1,
             radius: 8,
           ),
+      animation: animation,
       shadow: shadow ?? const TooltipShadowConfig(),
       tooltipContentBuilder: (context, hide) {
         return Padding(
@@ -354,6 +362,7 @@ class TooltipProState extends State<TooltipPro> {
       borderColor: widget.border.color,
       borderWidth: widget.border.width,
       borderRadius: widget.border.radius,
+      animation: widget.animation,
       customArrowOffset: widget.customArrowOffset,
       arrowWidth: widget.arrowWidth,
       arrowHeight: widget.arrowHeight,
