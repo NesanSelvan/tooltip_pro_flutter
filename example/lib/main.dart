@@ -31,6 +31,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  final TooltipProController _tooltipController = TooltipProController();
 
   void _incrementCounter() {
     setState(() {
@@ -50,6 +51,29 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('You have pushed the button this many times:'),
+            const SizedBox(height: 16),
+            TooltipPro.minimal(
+              controller: _tooltipController,
+              text: 'Controlled tooltip',
+              tooltipWidth: 160,
+              child: const Icon(Icons.info_outline, size: 28),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _tooltipController.show,
+                  child: const Text('Show'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  onPressed: _tooltipController.hide,
+                  child: const Text('Hide'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
             TooltipPro(
               // tooltipHeight: 200,
               tooltipWidth: 180,

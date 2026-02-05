@@ -4,6 +4,32 @@ import 'package:tooltip_pro/src/tooltip_controller.dart';
 import 'package:tooltip_pro/src/tooltip_enums.dart';
 import 'package:tooltip_pro/src/tooltip_size.dart';
 
+class TooltipProController {
+  TooltipProState? _state;
+
+  bool get isVisible => _state?._isTooltipVisible ?? false;
+
+  void show() {
+    if (_state == null || !_state!.mounted) return;
+    _state!._showTooltip();
+  }
+
+  void hide() {
+    if (_state == null || !_state!.mounted) return;
+    _state!.hideTooltip();
+  }
+
+  void _attach(TooltipProState state) {
+    _state = state;
+  }
+
+  void _detach(TooltipProState state) {
+    if (_state == state) {
+      _state = null;
+    }
+  }
+}
+
 class TooltipPro extends StatefulWidget {
   final Widget child;
   final TooltipDirection direction;
@@ -28,6 +54,7 @@ class TooltipPro extends StatefulWidget {
   final Widget? tooltipContent;
   final bool showAtTapPosition;
   final TooltipProTriggerMode triggerMode;
+  final TooltipProController? controller;
 
   final Widget Function(BuildContext context, VoidCallback hideTooltip)?
   tooltipContentBuilder;
@@ -60,6 +87,7 @@ class TooltipPro extends StatefulWidget {
     this.arrowHeight = 10.0,
     this.showAtTapPosition = false,
     this.triggerMode = TooltipProTriggerMode.tap,
+    this.controller,
   });
 
   /// A minimal tooltip with just text.
@@ -87,12 +115,14 @@ class TooltipPro extends StatefulWidget {
     double arrowHeight = 10.0,
     bool showAtTapPosition = false,
     TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
+    TooltipProController? controller,
   }) {
     return TooltipPro(
       key: key,
       direction: direction,
       showAtTapPosition: showAtTapPosition,
       triggerMode: triggerMode,
+      controller: controller,
       tooltipColor: tooltipColor ?? const Color(0xFF1E1E1E),
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
@@ -147,12 +177,14 @@ class TooltipPro extends StatefulWidget {
     double arrowHeight = 10.0,
     bool showAtTapPosition = false,
     TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
+    TooltipProController? controller,
   }) {
     return TooltipPro(
       key: key,
       direction: direction,
       showAtTapPosition: showAtTapPosition,
       triggerMode: triggerMode,
+      controller: controller,
       tooltipColor: tooltipColor ?? Colors.white,
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
@@ -257,12 +289,14 @@ class TooltipPro extends StatefulWidget {
     double arrowHeight = 10.0,
     bool showAtTapPosition = false,
     TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
+    TooltipProController? controller,
   }) {
     return TooltipPro(
       key: key,
       direction: direction,
       showAtTapPosition: showAtTapPosition,
       triggerMode: triggerMode,
+      controller: controller,
       tooltipColor: tooltipColor ?? const Color(0xFFFEF2F2),
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
@@ -321,28 +355,41 @@ class TooltipPro extends StatefulWidget {
 
 class TooltipProState extends State<TooltipPro> {
   final GlobalKey _targetKey = GlobalKey();
-  late final TooltipController _controller;
+  late final TooltipController _tooltipController;
   Offset? _tapPosition;
+
+  bool get _isTooltipVisible => _tooltipController.isVisible;
 
   @override
   void initState() {
     super.initState();
-    _controller = TooltipController();
+    _tooltipController = TooltipController();
+    widget.controller?._attach(this);
+  }
+
+  @override
+  void didUpdateWidget(covariant TooltipPro oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller?._detach(this);
+      widget.controller?._attach(this);
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    widget.controller?._detach(this);
+    _tooltipController.dispose();
     super.dispose();
   }
 
   /// Hide the tooltip programmatically
   void hideTooltip() {
-    _controller.hide();
+    _tooltipController.hide();
   }
 
   void _showTooltip({bool fromHold = false}) {
-    _controller.show(
+    _tooltipController.show(
       context: context,
       targetKey: _targetKey,
       direction: widget.direction,
