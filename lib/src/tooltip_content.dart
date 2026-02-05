@@ -5,7 +5,7 @@ import 'package:tooltip_pro/src/tooltip_painter.dart';
 class TooltipContent extends StatelessWidget {
   final double? height;
   final double? width;
-  final TooltipArrowDirection arrowDirection;
+  final TooltipCaretDirection caretDirection;
   final TooltipDirection direction;
   final Color? tooltipColor;
   final bool enableShadow;
@@ -16,16 +16,16 @@ class TooltipContent extends StatelessWidget {
   final Color borderColor;
   final double borderWidth;
   final double borderRadius;
-  final double customArrowOffset;
-  final double arrowWidth;
-  final double arrowHeight;
+  final double customCaretOffset;
+  final double caretWidth;
+  final double caretHeight;
   final Widget? content;
 
   const TooltipContent({
     super.key,
     this.height,
     this.width,
-    this.arrowDirection = TooltipArrowDirection.left,
+    this.caretDirection = TooltipCaretDirection.left,
     this.direction = TooltipDirection.top,
     this.tooltipColor,
     this.enableShadow = false,
@@ -36,9 +36,9 @@ class TooltipContent extends StatelessWidget {
     this.borderColor = Colors.black,
     this.borderWidth = 1.0,
     this.borderRadius = 8.0,
-    this.customArrowOffset = 0.5,
-    this.arrowWidth = 12.0,
-    this.arrowHeight = 10.0,
+    this.customCaretOffset = 0.5,
+    this.caretWidth = 12.0,
+    this.caretHeight = 10.0,
     this.content,
   });
 
@@ -64,12 +64,33 @@ class TooltipContent extends StatelessWidget {
         break;
     }
 
+    Widget child = Container(
+      height: height,
+      width: width,
+      padding: padding,
+      child: content != null
+          ? Align(
+              alignment: Alignment.center,
+              widthFactor: width == null ? null : 1.0,
+              heightFactor: height == null ? null : 1.0,
+              child: content,
+            )
+          : null,
+    );
+
+    if (width == null) {
+      child = IntrinsicWidth(child: child);
+    }
+    if (height == null) {
+      child = IntrinsicHeight(child: child);
+    }
+
     return Material(
       type: MaterialType.transparency,
       child: CustomPaint(
         painter: TooltipPainter(
           color: effectiveColor,
-          arrowDirection: arrowDirection,
+          caretDirection: caretDirection,
           tooltipDirection: direction,
           enableShadow: enableShadow,
           shadowColor: effectiveShadowColor,
@@ -79,23 +100,11 @@ class TooltipContent extends StatelessWidget {
           borderColor: borderColor,
           borderWidth: borderWidth,
           borderRadius: borderRadius,
-          customArrowOffset: customArrowOffset,
-          arrowWidth: arrowWidth,
-          arrowHeight: arrowHeight,
+          customCaretOffset: customCaretOffset,
+          caretWidth: caretWidth,
+          caretHeight: caretHeight,
         ),
-        child: Container(
-          height: height,
-          width: width,
-          padding: padding,
-          child: content != null
-              ? Align(
-                  alignment: Alignment.center,
-                  widthFactor: 1.0,
-                  heightFactor: 1.0,
-                  child: content,
-                )
-              : null,
-        ),
+        child: child,
       ),
     );
   }

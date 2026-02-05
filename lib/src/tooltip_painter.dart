@@ -3,7 +3,7 @@ import 'package:tooltip_pro/src/tooltip_enums.dart';
 
 class TooltipPainter extends CustomPainter {
   final Color color;
-  final TooltipArrowDirection arrowDirection;
+  final TooltipCaretDirection caretDirection;
   final TooltipDirection tooltipDirection;
   final bool enableShadow;
   final Color shadowColor;
@@ -13,13 +13,13 @@ class TooltipPainter extends CustomPainter {
   final Color borderColor;
   final double borderWidth;
   final double borderRadius;
-  final double customArrowOffset;
-  final double arrowWidth;
-  final double arrowHeight;
+  final double customCaretOffset;
+  final double caretWidth;
+  final double caretHeight;
 
   TooltipPainter({
     required this.color,
-    required this.arrowDirection,
+    required this.caretDirection,
     required this.tooltipDirection,
     this.enableShadow = false,
     this.shadowColor = const Color(0x4D000000),
@@ -29,9 +29,9 @@ class TooltipPainter extends CustomPainter {
     this.borderColor = Colors.black,
     this.borderWidth = 1.0,
     this.borderRadius = 8.0,
-    this.customArrowOffset = 0.5,
-    this.arrowWidth = 12.0,
-    this.arrowHeight = 10.0,
+    this.customCaretOffset = 0.5,
+    this.caretWidth = 12.0,
+    this.caretHeight = 10.0,
   });
 
   @override
@@ -67,7 +67,7 @@ class TooltipPainter extends CustomPainter {
   Path _buildPath(Size size) {
     final path = Path();
     // Use instance variables instead of constants
-    // arrowHeight and arrowWidth are already part of the class
+    // caretHeight and caretWidth are already part of the class
 
     double radius = borderRadius;
 
@@ -76,9 +76,9 @@ class TooltipPainter extends CustomPainter {
 
     if (tooltipDirection == TooltipDirection.top ||
         tooltipDirection == TooltipDirection.bottom) {
-      bodyHeight -= arrowHeight;
+      bodyHeight -= caretHeight;
     } else {
-      bodyWidth -= arrowHeight;
+      bodyWidth -= caretHeight;
     }
 
     final maxRadius = (bodyHeight < bodyWidth ? bodyHeight : bodyWidth) / 2;
@@ -88,97 +88,97 @@ class TooltipPainter extends CustomPainter {
 
     if (tooltipDirection == TooltipDirection.top ||
         tooltipDirection == TooltipDirection.bottom) {
-      if (radius > (bodyWidth - arrowWidth) / 2) {
-        radius = (bodyWidth - arrowWidth) / 2;
+      if (radius > (bodyWidth - caretWidth) / 2) {
+        radius = (bodyWidth - caretWidth) / 2;
       }
     } else {
-      if (radius > (bodyHeight - arrowWidth) / 2) {
-        radius = (bodyHeight - arrowWidth) / 2;
+      if (radius > (bodyHeight - caretWidth) / 2) {
+        radius = (bodyHeight - caretWidth) / 2;
       }
     }
 
     if (radius < 0) radius = 0;
 
-    double arrowPos;
-    final minArrowOffset = radius + arrowWidth / 2;
+    double caretPos;
+    final minCaretOffset = radius + caretWidth / 2;
 
-    if (size.width < minArrowOffset * 2 &&
+    if (size.width < minCaretOffset * 2 &&
         (tooltipDirection == TooltipDirection.top ||
             tooltipDirection == TooltipDirection.bottom)) {
-      arrowPos = size.width / 2;
-    } else if (size.height < minArrowOffset * 2 &&
+      caretPos = size.width / 2;
+    } else if (size.height < minCaretOffset * 2 &&
         (tooltipDirection == TooltipDirection.left ||
             tooltipDirection == TooltipDirection.right)) {
-      arrowPos = size.height / 2;
+      caretPos = size.height / 2;
     } else {
       if (tooltipDirection == TooltipDirection.left ||
           tooltipDirection == TooltipDirection.right) {
-        final maxPos = size.height - minArrowOffset;
-        switch (arrowDirection) {
-          case TooltipArrowDirection.left:
-            arrowPos = (size.height * 0.2).clamp(minArrowOffset, maxPos);
+        final maxPos = size.height - minCaretOffset;
+        switch (caretDirection) {
+          case TooltipCaretDirection.left:
+            caretPos = (size.height * 0.2).clamp(minCaretOffset, maxPos);
             break;
-          case TooltipArrowDirection.right:
-            arrowPos = (size.height * 0.8).clamp(minArrowOffset, maxPos);
+          case TooltipCaretDirection.right:
+            caretPos = (size.height * 0.8).clamp(minCaretOffset, maxPos);
             break;
-          case TooltipArrowDirection.center:
-            arrowPos = size.height * 0.5;
+          case TooltipCaretDirection.center:
+            caretPos = size.height * 0.5;
             break;
-          case TooltipArrowDirection.custom:
-            arrowPos = (size.height * customArrowOffset).clamp(
-              minArrowOffset,
+          case TooltipCaretDirection.custom:
+            caretPos = (size.height * customCaretOffset).clamp(
+              minCaretOffset,
               maxPos,
             );
             break;
-          case TooltipArrowDirection.none:
-            arrowPos = 0;
+          case TooltipCaretDirection.none:
+            caretPos = 0;
             break;
         }
       } else {
-        final maxPos = size.width - minArrowOffset;
-        switch (arrowDirection) {
-          case TooltipArrowDirection.left:
-            arrowPos = (size.width * 0.2).clamp(minArrowOffset, maxPos);
+        final maxPos = size.width - minCaretOffset;
+        switch (caretDirection) {
+          case TooltipCaretDirection.left:
+            caretPos = (size.width * 0.2).clamp(minCaretOffset, maxPos);
             break;
-          case TooltipArrowDirection.right:
-            arrowPos = (size.width * 0.8).clamp(minArrowOffset, maxPos);
+          case TooltipCaretDirection.right:
+            caretPos = (size.width * 0.8).clamp(minCaretOffset, maxPos);
             break;
-          case TooltipArrowDirection.center:
-            arrowPos = size.width * 0.5;
+          case TooltipCaretDirection.center:
+            caretPos = size.width * 0.5;
             break;
-          case TooltipArrowDirection.custom:
-            arrowPos = (size.width * customArrowOffset).clamp(
-              minArrowOffset,
+          case TooltipCaretDirection.custom:
+            caretPos = (size.width * customCaretOffset).clamp(
+              minCaretOffset,
               maxPos,
             );
             break;
-          case TooltipArrowDirection.none:
-            arrowPos = 0;
+          case TooltipCaretDirection.none:
+            caretPos = 0;
             break;
         }
       }
     }
 
-    if (arrowDirection == TooltipArrowDirection.none) {
+    if (caretDirection == TooltipCaretDirection.none) {
       final bodyRect = Rect.fromLTWH(0, 0, size.width, size.height);
       path.addRRect(RRect.fromRectAndRadius(bodyRect, Radius.circular(radius)));
       return path;
     }
 
-    // Build a single continuous path with arrow integrated
+    // Build a single continuous path with caret integrated
     switch (tooltipDirection) {
       case TooltipDirection.bottom:
         // Arrow points up, body below
-        final bodyTop = arrowHeight;
+        final bodyTop = caretHeight;
         final bodyBottom = size.height;
 
         // Start from top-left corner of body (after radius)
         path.moveTo(radius, bodyTop);
 
-        // Top edge with arrow
-        path.lineTo(arrowPos - arrowWidth / 2, bodyTop);
-        path.lineTo(arrowPos, 0); // Arrow tip
-        path.lineTo(arrowPos + arrowWidth / 2, bodyTop);
+        // Top edge with caret
+        path.lineTo(caretPos - caretWidth / 2, bodyTop);
+        path.lineTo(caretPos, 0); // Arrow tip
+        path.lineTo(caretPos + caretWidth / 2, bodyTop);
         path.lineTo(size.width - radius, bodyTop);
 
         // Top-right corner
@@ -217,7 +217,7 @@ class TooltipPainter extends CustomPainter {
 
       case TooltipDirection.top:
         // Arrow points down, body above
-        final bodyBottom = size.height - arrowHeight;
+        final bodyBottom = size.height - caretHeight;
 
         // Start from top-left corner (after radius)
         path.moveTo(radius, 0);
@@ -240,10 +240,10 @@ class TooltipPainter extends CustomPainter {
           radius: Radius.circular(radius),
         );
 
-        // Bottom edge with arrow
-        path.lineTo(arrowPos + arrowWidth / 2, bodyBottom);
-        path.lineTo(arrowPos, size.height); // Arrow tip
-        path.lineTo(arrowPos - arrowWidth / 2, bodyBottom);
+        // Bottom edge with caret
+        path.lineTo(caretPos + caretWidth / 2, bodyBottom);
+        path.lineTo(caretPos, size.height); // Arrow tip
+        path.lineTo(caretPos - caretWidth / 2, bodyBottom);
         path.lineTo(radius, bodyBottom);
 
         // Bottom-left corner
@@ -261,7 +261,7 @@ class TooltipPainter extends CustomPainter {
 
       case TooltipDirection.right:
         // Arrow points left, body on right
-        final bodyLeft = arrowHeight;
+        final bodyLeft = caretHeight;
 
         // Start from top-left of body (after radius)
         path.moveTo(bodyLeft + radius, 0);
@@ -293,10 +293,10 @@ class TooltipPainter extends CustomPainter {
           radius: Radius.circular(radius),
         );
 
-        // Left edge with arrow
-        path.lineTo(bodyLeft, arrowPos + arrowWidth / 2);
-        path.lineTo(0, arrowPos); // Arrow tip
-        path.lineTo(bodyLeft, arrowPos - arrowWidth / 2);
+        // Left edge with caret
+        path.lineTo(bodyLeft, caretPos + caretWidth / 2);
+        path.lineTo(0, caretPos); // Arrow tip
+        path.lineTo(bodyLeft, caretPos - caretWidth / 2);
         path.lineTo(bodyLeft, radius);
 
         // Top-left corner
@@ -308,7 +308,7 @@ class TooltipPainter extends CustomPainter {
 
       case TooltipDirection.left:
         // Arrow points right, body on left
-        final bodyRight = size.width - arrowHeight;
+        final bodyRight = size.width - caretHeight;
 
         // Start from top-left corner (after radius)
         path.moveTo(radius, 0);
@@ -322,10 +322,10 @@ class TooltipPainter extends CustomPainter {
           radius: Radius.circular(radius),
         );
 
-        // Right edge with arrow
-        path.lineTo(bodyRight, arrowPos - arrowWidth / 2);
-        path.lineTo(size.width, arrowPos); // Arrow tip
-        path.lineTo(bodyRight, arrowPos + arrowWidth / 2);
+        // Right edge with caret
+        path.lineTo(bodyRight, caretPos - caretWidth / 2);
+        path.lineTo(size.width, caretPos); // Arrow tip
+        path.lineTo(bodyRight, caretPos + caretWidth / 2);
         path.lineTo(bodyRight, size.height - radius);
 
         // Bottom-right corner
@@ -358,7 +358,7 @@ class TooltipPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant TooltipPainter oldDelegate) =>
       color != oldDelegate.color ||
-      arrowDirection != oldDelegate.arrowDirection ||
+      caretDirection != oldDelegate.caretDirection ||
       tooltipDirection != oldDelegate.tooltipDirection ||
       enableShadow != oldDelegate.enableShadow ||
       shadowColor != oldDelegate.shadowColor ||
@@ -368,7 +368,7 @@ class TooltipPainter extends CustomPainter {
       borderColor != oldDelegate.borderColor ||
       borderWidth != oldDelegate.borderWidth ||
       borderRadius != oldDelegate.borderRadius ||
-      customArrowOffset != oldDelegate.customArrowOffset ||
-      arrowWidth != oldDelegate.arrowWidth ||
-      arrowHeight != oldDelegate.arrowHeight;
+      customCaretOffset != oldDelegate.customCaretOffset ||
+      caretWidth != oldDelegate.caretWidth ||
+      caretHeight != oldDelegate.caretHeight;
 }

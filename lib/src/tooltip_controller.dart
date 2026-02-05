@@ -22,7 +22,7 @@ class TooltipController {
     required BuildContext context,
     required GlobalKey targetKey,
     TooltipDirection direction = TooltipDirection.top,
-    TooltipArrowDirection arrowDirection = TooltipArrowDirection.center,
+    TooltipCaretDirection caretDirection = TooltipCaretDirection.center,
     Color? tooltipColor,
     bool enableShadow = false,
     Color? shadowColor,
@@ -33,7 +33,7 @@ class TooltipController {
     double borderWidth = 1.0,
     double borderRadius = 8.0,
     TooltipAnimationConfig animation = const TooltipAnimationConfig(),
-    double customArrowOffset = 0.5,
+    double customCaretOffset = 0.5,
     Widget? tooltipContent,
     Widget Function(BuildContext context, VoidCallback hideTooltip)?
     tooltipContentBuilder,
@@ -47,14 +47,80 @@ class TooltipController {
     Duration? autoDismiss = const Duration(seconds: 3),
     TooltipSize tooltipSize = const TooltipSize(),
     VoidCallback? onDismiss,
-    double arrowWidth = 12.0,
-    double arrowHeight = 10.0,
+    double caretWidth = 12.0,
+    double caretHeight = 10.0,
     Offset? touchPoint,
   }) {
     hide();
     _dismissTimer?.cancel();
     _onDismiss = onDismiss;
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showTooltipInternal(
+        context: context,
+        targetKey: targetKey,
+        direction: direction,
+        caretDirection: caretDirection,
+        tooltipColor: tooltipColor,
+        enableShadow: enableShadow,
+        shadowColor: shadowColor,
+        shadowElevation: shadowElevation,
+        shadowBlurRadius: shadowBlurRadius,
+        enableBorder: enableBorder,
+        borderColor: borderColor,
+        borderWidth: borderWidth,
+        borderRadius: borderRadius,
+        animation: animation,
+        customCaretOffset: customCaretOffset,
+        tooltipContent: tooltipContent,
+        tooltipContentBuilder: tooltipContentBuilder,
+        blurBackground: blurBackground,
+        blurSigma: blurSigma,
+        blurColor: blurColor,
+        excludeChildFromBlur: excludeChildFromBlur,
+        childWidget: childWidget,
+        tooltipBuilder: tooltipBuilder,
+        autoDismiss: autoDismiss,
+        tooltipSize: tooltipSize,
+        caretWidth: caretWidth,
+        caretHeight: caretHeight,
+        touchPoint: touchPoint,
+      );
+    });
+  }
+
+  void _showTooltipInternal({
+    required BuildContext context,
+    required GlobalKey targetKey,
+    required TooltipDirection direction,
+    required TooltipCaretDirection caretDirection,
+    required Color? tooltipColor,
+    required bool enableShadow,
+    required Color? shadowColor,
+    required double shadowElevation,
+    required double shadowBlurRadius,
+    required bool enableBorder,
+    required Color borderColor,
+    required double borderWidth,
+    required double borderRadius,
+    required TooltipAnimationConfig animation,
+    required double customCaretOffset,
+    required Widget? tooltipContent,
+    required Widget Function(BuildContext context, VoidCallback hideTooltip)?
+    tooltipContentBuilder,
+    required bool blurBackground,
+    required double blurSigma,
+    required Color? blurColor,
+    required bool excludeChildFromBlur,
+    required Widget? childWidget,
+    required Widget Function(BuildContext context, VoidCallback hideTooltip)?
+    tooltipBuilder,
+    required Duration? autoDismiss,
+    required TooltipSize tooltipSize,
+    required double caretWidth,
+    required double caretHeight,
+    required Offset? touchPoint,
+  }) {
     final RenderBox? renderBox =
         targetKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
@@ -72,10 +138,7 @@ class TooltipController {
     final screenSize = MediaQuery.of(context).size;
 
     final ValueNotifier<Size> tooltipMeasuredSize = ValueNotifier(
-      Size(
-        tooltipSize.width ?? 0,
-        tooltipSize.height ?? 0,
-      ),
+      Size(tooltipSize.width ?? 0, tooltipSize.height ?? 0),
     );
 
     final bool needsMeasurement =
@@ -116,7 +179,7 @@ class TooltipController {
       tooltipContent: tooltipContent,
       tooltipContentBuilder: tooltipContentBuilder,
       tooltipColor: tooltipColor,
-      arrowDirection: arrowDirection,
+      caretDirection: caretDirection,
       tooltipSize: tooltipSize,
       enableShadow: enableShadow,
       shadowColor: shadowColor,
@@ -126,9 +189,9 @@ class TooltipController {
       borderColor: borderColor,
       borderWidth: borderWidth,
       borderRadius: borderRadius,
-      arrowWidth: arrowWidth,
-      arrowHeight: arrowHeight,
-      customArrowOffset: customArrowOffset,
+      caretWidth: caretWidth,
+      caretHeight: caretHeight,
+      customCaretOffset: customCaretOffset,
     );
 
     if (needsMeasurement) {
@@ -149,6 +212,12 @@ class TooltipController {
             tooltipSize.width ?? measuredSize.width,
             tooltipSize.height ?? measuredSize.height,
           );
+
+          // Hide tooltip until we have measured size to prevent position jump
+          final bool hasMeasuredSize =
+              !needsMeasurement ||
+              (measuredSize.width > 0 && measuredSize.height > 0);
+
           final tooltipPosition = _calculatePosition(
             centerPosition,
             direction,
@@ -160,7 +229,7 @@ class TooltipController {
           return Positioned(
             left: tooltipPosition.dx,
             top: tooltipPosition.dy,
-            child: child!,
+            child: Opacity(opacity: hasMeasuredSize ? 1.0 : 0.0, child: child!),
           );
         },
         child: tooltipChild,
@@ -239,7 +308,7 @@ class TooltipController {
     required BuildContext context,
     required TooltipAnimationConfig animation,
     required TooltipDirection direction,
-    required TooltipArrowDirection arrowDirection,
+    required TooltipCaretDirection caretDirection,
     required TooltipSize tooltipSize,
     required bool enableShadow,
     required Color? shadowColor,
@@ -249,21 +318,21 @@ class TooltipController {
     required Color borderColor,
     required double borderWidth,
     required double borderRadius,
-    required double arrowWidth,
-    required double arrowHeight,
-    required double customArrowOffset,
+    required double caretWidth,
+    required double caretHeight,
+    required double customCaretOffset,
     required Widget? tooltipContent,
     required Widget Function(BuildContext context, VoidCallback hideTooltip)?
-        tooltipContentBuilder,
+    tooltipContentBuilder,
     required Widget Function(BuildContext context, VoidCallback hideTooltip)?
-        tooltipBuilder,
+    tooltipBuilder,
     required Color? tooltipColor,
   }) {
     final Widget content = tooltipBuilder != null
         ? tooltipBuilder(context, hide)
         : TooltipContent(
             tooltipColor: tooltipColor,
-            arrowDirection: arrowDirection,
+            caretDirection: caretDirection,
             height: tooltipSize.height,
             width: tooltipSize.width,
             direction: direction,
@@ -275,9 +344,9 @@ class TooltipController {
             borderColor: borderColor,
             borderWidth: borderWidth,
             borderRadius: borderRadius,
-            arrowWidth: arrowWidth,
-            arrowHeight: arrowHeight,
-            customArrowOffset: customArrowOffset,
+            caretWidth: caretWidth,
+            caretHeight: caretHeight,
+            customCaretOffset: customCaretOffset,
             content: tooltipContentBuilder != null
                 ? tooltipContentBuilder(context, hide)
                 : tooltipContent,

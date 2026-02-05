@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: TooltipPro(
         spacing: 30,
 
-        arrowDirection: TooltipArrowDirection.left,
+        caretDirection: TooltipCaretDirection.left,
         direction: TooltipDirection.top,
         tooltipContent: Text("Add Item"),
         // text: "Add Item",

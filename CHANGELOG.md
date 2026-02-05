@@ -1,3 +1,7 @@
+## 0.0.12
+
+* **Breaking**: Renamed arrow terminology to caret (`caretDirection`, `caretWidth`, `caretHeight`, `customCaretOffset`).
+
 ## 0.0.11
 
 * **Feature**: Added `TooltipProController` to show/hide tooltips programmatically.
@@ -30,12 +34,12 @@
 
 * **Update**: Comprehensive documentation update.
 * **Feature**: Added `showAtTapPosition` to display tooltip exactly where the user tapped.
-* **Feature**: Enhanced Arrow Customization with `arrowWidth`, `arrowHeight` and `TooltipArrowDirection.custom`.
+* **Feature**: Enhanced Caret Customization with `caretWidth`, `caretHeight` and `TooltipCaretDirection.custom`.
 
 ## 0.0.4
 
-* **Fix**: Resolves layout issues with arrow positioning.
-* **Feature**: Exposed granular control for arrow dimensions and offsets.
+* **Fix**: Resolves layout issues with caret positioning.
+* **Feature**: Exposed granular control for caret dimensions and offsets.
 
 ## 0.0.3
 
@@ -51,7 +55,7 @@
 * Features included:
     * Rich content support (text, icons, custom widgets).
     * Flexible positioning (top, bottom, left, right).
-    * Custom arrow configuration (width, height, offset, direction).
+    * Custom caret configuration (width, height, offset, direction).
     * Styling options (background color, borders, shadows, blur effects).
     * Factory constructors for minimal, rich, and error tooltips.
     * Auto-dismiss functionality.

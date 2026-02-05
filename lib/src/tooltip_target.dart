@@ -33,14 +33,14 @@ class TooltipProController {
 class TooltipPro extends StatefulWidget {
   final Widget child;
   final TooltipDirection direction;
-  final TooltipArrowDirection arrowDirection;
+  final TooltipCaretDirection caretDirection;
 
-  final double customArrowOffset;
+  final double customCaretOffset;
   final Duration? autoDismiss;
   final double? tooltipHeight;
   final double? tooltipWidth;
-  final double arrowWidth;
-  final double arrowHeight;
+  final double caretWidth;
+  final double caretHeight;
 
   final double spacing;
   final double horizontalPadding;
@@ -66,8 +66,8 @@ class TooltipPro extends StatefulWidget {
     super.key,
     required this.child,
     this.direction = TooltipDirection.top,
-    this.arrowDirection = TooltipArrowDirection.center,
-    this.customArrowOffset = 0.5,
+    this.caretDirection = TooltipCaretDirection.center,
+    this.customCaretOffset = 0.5,
     this.autoDismiss = const Duration(seconds: 3),
     this.tooltipHeight,
     this.tooltipWidth,
@@ -83,8 +83,8 @@ class TooltipPro extends StatefulWidget {
     this.tooltipContent,
     this.tooltipContentBuilder,
     this.tooltipBuilder,
-    this.arrowWidth = 12.0,
-    this.arrowHeight = 10.0,
+    this.caretWidth = 12.0,
+    this.caretHeight = 10.0,
     this.showAtTapPosition = false,
     this.triggerMode = TooltipProTriggerMode.tap,
     this.controller,
@@ -97,7 +97,7 @@ class TooltipPro extends StatefulWidget {
     required Widget child,
     required String text,
     TooltipDirection direction = TooltipDirection.top,
-    TooltipArrowDirection arrowDirection = TooltipArrowDirection.center,
+    TooltipCaretDirection caretDirection = TooltipCaretDirection.center,
     Duration? autoDismiss = const Duration(seconds: 3),
     double? tooltipHeight,
     double? tooltipWidth,
@@ -110,9 +110,9 @@ class TooltipPro extends StatefulWidget {
     TooltipBlurConfig blur = const TooltipBlurConfig(),
     TooltipBorderConfig? border,
     TooltipAnimationConfig animation = const TooltipAnimationConfig(),
-    double customArrowOffset = 0.5,
-    double arrowWidth = 12.0,
-    double arrowHeight = 10.0,
+    double customCaretOffset = 0.5,
+    double caretWidth = 12.0,
+    double caretHeight = 10.0,
     bool showAtTapPosition = false,
     TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
     TooltipProController? controller,
@@ -126,8 +126,8 @@ class TooltipPro extends StatefulWidget {
       tooltipColor: tooltipColor ?? const Color(0xFF1E1E1E),
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
-      arrowDirection: arrowDirection,
-      customArrowOffset: customArrowOffset,
+      caretDirection: caretDirection,
+      customCaretOffset: customCaretOffset,
       autoDismiss: autoDismiss,
       spacing: spacing,
       horizontalPadding: horizontalPadding,
@@ -144,8 +144,8 @@ class TooltipPro extends StatefulWidget {
       shadow:
           shadow ??
           const TooltipShadowConfig(enabled: true, blurRadius: 4, elevation: 2),
-      arrowWidth: arrowWidth,
-      arrowHeight: arrowHeight,
+      caretWidth: caretWidth,
+      caretHeight: caretHeight,
       child: child,
     );
   }
@@ -160,7 +160,7 @@ class TooltipPro extends StatefulWidget {
     IconData icon = Icons.info_outline_rounded,
     TooltipDirection direction = TooltipDirection.top,
     VoidCallback? onClose,
-    TooltipArrowDirection arrowDirection = TooltipArrowDirection.center,
+    TooltipCaretDirection caretDirection = TooltipCaretDirection.center,
     Duration? autoDismiss = const Duration(seconds: 3),
     double? tooltipHeight,
     double? tooltipWidth,
@@ -172,9 +172,9 @@ class TooltipPro extends StatefulWidget {
     TooltipBlurConfig blur = const TooltipBlurConfig(),
     TooltipBorderConfig? border,
     TooltipAnimationConfig animation = const TooltipAnimationConfig(),
-    double customArrowOffset = 0.5,
-    double arrowWidth = 12.0,
-    double arrowHeight = 10.0,
+    double customCaretOffset = 0.5,
+    double caretWidth = 12.0,
+    double caretHeight = 10.0,
     bool showAtTapPosition = false,
     TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
     TooltipProController? controller,
@@ -188,8 +188,8 @@ class TooltipPro extends StatefulWidget {
       tooltipColor: tooltipColor ?? Colors.white,
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
-      arrowDirection: arrowDirection,
-      customArrowOffset: customArrowOffset,
+      caretDirection: caretDirection,
+      customCaretOffset: customCaretOffset,
       onPressed: onClose,
       autoDismiss: autoDismiss,
       spacing: spacing,
@@ -259,8 +259,8 @@ class TooltipPro extends StatefulWidget {
           ),
         );
       },
-      arrowWidth: arrowWidth,
-      arrowHeight: arrowHeight,
+      caretWidth: caretWidth,
+      caretHeight: caretHeight,
       child: child,
     );
   }
@@ -271,7 +271,7 @@ class TooltipPro extends StatefulWidget {
     required Widget child,
     required String message,
     TooltipDirection direction = TooltipDirection.bottom,
-    TooltipArrowDirection arrowDirection = TooltipArrowDirection.left,
+    TooltipCaretDirection caretDirection = TooltipCaretDirection.left,
     Duration? autoDismiss = const Duration(seconds: 3),
     double? tooltipHeight,
     double? tooltipWidth,
@@ -284,9 +284,9 @@ class TooltipPro extends StatefulWidget {
     TooltipBlurConfig blur = const TooltipBlurConfig(),
     TooltipBorderConfig? border,
     TooltipAnimationConfig animation = const TooltipAnimationConfig(),
-    double customArrowOffset = 0.2,
-    double arrowWidth = 12.0,
-    double arrowHeight = 10.0,
+    double customCaretOffset = 0.2,
+    double caretWidth = 12.0,
+    double caretHeight = 10.0,
     bool showAtTapPosition = false,
     TooltipProTriggerMode triggerMode = TooltipProTriggerMode.tap,
     TooltipProController? controller,
@@ -300,8 +300,8 @@ class TooltipPro extends StatefulWidget {
       tooltipColor: tooltipColor ?? const Color(0xFFFEF2F2),
       tooltipHeight: tooltipHeight,
       tooltipWidth: tooltipWidth,
-      arrowDirection: arrowDirection,
-      customArrowOffset: customArrowOffset,
+      caretDirection: caretDirection,
+      customCaretOffset: customCaretOffset,
       autoDismiss: autoDismiss,
       spacing: spacing,
       horizontalPadding: horizontalPadding,
@@ -343,8 +343,8 @@ class TooltipPro extends StatefulWidget {
           ),
         );
       },
-      arrowWidth: arrowWidth,
-      arrowHeight: arrowHeight,
+      caretWidth: caretWidth,
+      caretHeight: caretHeight,
       child: child,
     );
   }
@@ -393,7 +393,7 @@ class TooltipProState extends State<TooltipPro> {
       context: context,
       targetKey: _targetKey,
       direction: widget.direction,
-      arrowDirection: widget.arrowDirection,
+      caretDirection: widget.caretDirection,
       autoDismiss: fromHold ? null : widget.autoDismiss,
       tooltipColor: widget.tooltipColor,
       enableShadow: widget.shadow.enabled,
@@ -410,9 +410,9 @@ class TooltipProState extends State<TooltipPro> {
       borderWidth: widget.border.width,
       borderRadius: widget.border.radius,
       animation: widget.animation,
-      customArrowOffset: widget.customArrowOffset,
-      arrowWidth: widget.arrowWidth,
-      arrowHeight: widget.arrowHeight,
+      customCaretOffset: widget.customCaretOffset,
+      caretWidth: widget.caretWidth,
+      caretHeight: widget.caretHeight,
       tooltipContent: widget.tooltipContent,
       tooltipContentBuilder: widget.tooltipContentBuilder,
       tooltipBuilder: widget.tooltipBuilder,

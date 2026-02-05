@@ -1,6 +1,6 @@
 name: tooltip_pro
 description: A powerful and flexible Flutter package for creating highly customizable tooltips with rich content, shadows, blurs, and precise positioning control.
-version: 0.0.11
+version: 0.0.12
 repository: https://github.com/NesanSelvan/tooltip_pro_flutter
 
 environment:

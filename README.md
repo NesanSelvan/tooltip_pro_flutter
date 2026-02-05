@@ -14,7 +14,7 @@ A powerful and flexible tooltip package for Flutter that goes beyond simple text
 *   📍 **Flexible Positioning**: Position tooltips TOP, BOTTOM, LEFT, or RIGHT of the target.
 *   👆 **Tap Position**: Option to show the tooltip exactly where the user tapped (`showAtTapPosition`).
 *   ✋ **Hold to Show**: Show tooltips on hold or tap (`triggerMode`).
-*   🏹 **Advanced Arrow Control**:
+*   🏹 **Advanced Caret Control**:
     *   Directions: `left`, `right`, `center`, `none`, or `custom`.
     *   Full sizing control: `width`, `height`, and `offset`.
 *   🎬 **Animated Show**: Choose fade, scale, slide, or combo.
@@ -32,7 +32,7 @@ Add `tooltip_pro` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  tooltip_pro: ^0.0.11
+  tooltip_pro: ^0.0.12
 ```
 
 ## Usage
@@ -79,21 +79,21 @@ TooltipPro.error(
 
 ### 3. Advanced Customization
 
-#### 🏹 Arrow Configuration
-Control the arrow's existence, position, and size.
+#### 🏹 Caret Configuration
+Control the caret's existence, position, and size.
 
 ```dart
 TooltipPro(
-  // Remove the arrow entirely
-  arrowDirection: TooltipArrowDirection.none,
+  // Remove the caret entirely
+  caretDirection: TooltipCaretDirection.none,
 
-  // OR Custom arrow sizing
-  arrowWidth: 20.0,
-  arrowHeight: 15.0,
+  // OR Custom caret sizing
+  caretWidth: 20.0,
+  caretHeight: 15.0,
   
   // OR Custom position (0.0 = left/top edge, 1.0 = right/bottom edge)
-  arrowDirection: TooltipArrowDirection.custom,
-  customArrowOffset: 0.2, // 20% from the start
+  caretDirection: TooltipCaretDirection.custom,
+  customCaretOffset: 0.2, // 20% from the start
   
   child: MyWidget(),
 )
@@ -205,12 +205,12 @@ ElevatedButton(
 |---|---|---|---|
 | `child` | `Widget` | **required** | The widget that triggers the tooltip on tap or hold. |
 | `direction` | `TooltipDirection` | `top` | `top`, `bottom`, `left`, `right`. Overall position relative to child. |
-| `arrowDirection` | `TooltipArrowDirection` | `center` | `center`, `start`, `end`, `none`, `custom`. Position of the arrow on the tooltip bubble. |
+| `caretDirection` | `TooltipCaretDirection` | `center` | `center`, `start`, `end`, `none`, `custom`. Position of the caret on the tooltip bubble. |
 | `showAtTapPosition`| `bool` | `false` | If true, tooltip appears exactly where you tapped, ignoring `direction` slightly to align with touch. |
 | `triggerMode`| `TooltipProTriggerMode` | `tap` | `tap`, `hold`, `tapAndHold`. Hold disables auto-dismiss. |
-| `customArrowOffset`| `double` | `0.5` | Used when `arrowDirection` is `custom`. `0.0` to `1.0`. |
-| `arrowWidth` | `double` | `12.0` | Width of the arrow base. |
-| `arrowHeight` | `double` | `10.0` | Height (length) of the arrow. |
+| `customCaretOffset`| `double` | `0.5` | Used when `caretDirection` is `custom`. `0.0` to `1.0`. |
+| `caretWidth` | `double` | `12.0` | Width of the caret base. |
+| `caretHeight` | `double` | `10.0` | Height (length) of the caret. |
 | `tooltipHeight` | `double?` | `null` | Optional fixed height; defaults to content size. |
 | `tooltipWidth` | `double?` | `null` | Optional fixed width; defaults to content size. |
 | `animation` | `TooltipAnimationConfig` | `const` | Configure show animation type, duration, and curve. |
