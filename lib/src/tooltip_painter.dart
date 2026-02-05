@@ -168,7 +168,7 @@ class TooltipPainter extends CustomPainter {
     // Build a single continuous path with caret integrated
     switch (tooltipDirection) {
       case TooltipDirection.bottom:
-        // Arrow points up, body below
+        // Caret points up, body below
         final bodyTop = caretHeight;
         final bodyBottom = size.height;
 
@@ -177,7 +177,7 @@ class TooltipPainter extends CustomPainter {
 
         // Top edge with caret
         path.lineTo(caretPos - caretWidth / 2, bodyTop);
-        path.lineTo(caretPos, 0); // Arrow tip
+        path.lineTo(caretPos, 0); // Caret tip
         path.lineTo(caretPos + caretWidth / 2, bodyTop);
         path.lineTo(size.width - radius, bodyTop);
 
@@ -216,7 +216,7 @@ class TooltipPainter extends CustomPainter {
         break;
 
       case TooltipDirection.top:
-        // Arrow points down, body above
+        // Caret points down, body above
         final bodyBottom = size.height - caretHeight;
 
         // Start from top-left corner (after radius)
@@ -242,7 +242,7 @@ class TooltipPainter extends CustomPainter {
 
         // Bottom edge with caret
         path.lineTo(caretPos + caretWidth / 2, bodyBottom);
-        path.lineTo(caretPos, size.height); // Arrow tip
+        path.lineTo(caretPos, size.height); // Caret tip
         path.lineTo(caretPos - caretWidth / 2, bodyBottom);
         path.lineTo(radius, bodyBottom);
 
@@ -260,7 +260,7 @@ class TooltipPainter extends CustomPainter {
         break;
 
       case TooltipDirection.right:
-        // Arrow points left, body on right
+        // Caret points left, body on right
         final bodyLeft = caretHeight;
 
         // Start from top-left of body (after radius)
@@ -295,7 +295,7 @@ class TooltipPainter extends CustomPainter {
 
         // Left edge with caret
         path.lineTo(bodyLeft, caretPos + caretWidth / 2);
-        path.lineTo(0, caretPos); // Arrow tip
+        path.lineTo(0, caretPos); // Caret tip
         path.lineTo(bodyLeft, caretPos - caretWidth / 2);
         path.lineTo(bodyLeft, radius);
 
@@ -307,7 +307,7 @@ class TooltipPainter extends CustomPainter {
         break;
 
       case TooltipDirection.left:
-        // Arrow points right, body on left
+        // Caret points right, body on left
         final bodyRight = size.width - caretHeight;
 
         // Start from top-left corner (after radius)
@@ -324,7 +324,7 @@ class TooltipPainter extends CustomPainter {
 
         // Right edge with caret
         path.lineTo(bodyRight, caretPos - caretWidth / 2);
-        path.lineTo(size.width, caretPos); // Arrow tip
+        path.lineTo(size.width, caretPos); // Caret tip
         path.lineTo(bodyRight, caretPos + caretWidth / 2);
         path.lineTo(bodyRight, size.height - radius);
 

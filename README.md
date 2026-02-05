@@ -205,7 +205,7 @@ ElevatedButton(
 |---|---|---|---|
 | `child` | `Widget` | **required** | The widget that triggers the tooltip on tap or hold. |
 | `direction` | `TooltipDirection` | `top` | `top`, `bottom`, `left`, `right`. Overall position relative to child. |
-| `caretDirection` | `TooltipCaretDirection` | `center` | `center`, `start`, `end`, `none`, `custom`. Position of the caret on the tooltip bubble. |
+| `caretDirection` | `TooltipCaretDirection` | `center` | `left`, `center`, `right`, `none`, `custom`. Position of the caret on the tooltip bubble. |
 | `showAtTapPosition`| `bool` | `false` | If true, tooltip appears exactly where you tapped, ignoring `direction` slightly to align with touch. |
 | `triggerMode`| `TooltipProTriggerMode` | `tap` | `tap`, `hold`, `tapAndHold`. Hold disables auto-dismiss. |
 | `customCaretOffset`| `double` | `0.5` | Used when `caretDirection` is `custom`. `0.0` to `1.0`. |
