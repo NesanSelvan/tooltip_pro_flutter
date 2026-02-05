@@ -1,3 +1,7 @@
+## 0.0.10
+
+* **Feature**: Tooltip size now defaults to dynamic content sizing when height/width are unset.
+
 ## 0.0.9
 
 * **Feature**: Added trigger modes for tap/hold behavior.
