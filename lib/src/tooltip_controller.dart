@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:tooltip_pro/src/tooltip_content.dart';
 import 'package:tooltip_pro/src/tooltip_config.dart';
 import 'package:tooltip_pro/src/tooltip_enums.dart';
@@ -70,12 +71,15 @@ class TooltipController {
 
     final screenSize = MediaQuery.of(context).size;
 
-    final tooltipPosition = _calculatePosition(
-      centerPosition,
-      direction,
-      tooltipSize,
-      screenSize,
+    final ValueNotifier<Size> tooltipMeasuredSize = ValueNotifier(
+      Size(
+        tooltipSize.width ?? 0,
+        tooltipSize.height ?? 0,
+      ),
     );
+
+    final bool needsMeasurement =
+        tooltipSize.width == null || tooltipSize.height == null;
 
     if (blurBackground) {
       _backgroundEntry = OverlayEntry(
@@ -104,32 +108,62 @@ class TooltipController {
       }
     }
 
+    Widget tooltipChild = _buildAnimatedTooltip(
+      context: context,
+      tooltipBuilder: tooltipBuilder,
+      animation: animation,
+      direction: direction,
+      tooltipContent: tooltipContent,
+      tooltipContentBuilder: tooltipContentBuilder,
+      tooltipColor: tooltipColor,
+      arrowDirection: arrowDirection,
+      tooltipSize: tooltipSize,
+      enableShadow: enableShadow,
+      shadowColor: shadowColor,
+      shadowElevation: shadowElevation,
+      shadowBlurRadius: shadowBlurRadius,
+      enableBorder: enableBorder,
+      borderColor: borderColor,
+      borderWidth: borderWidth,
+      borderRadius: borderRadius,
+      arrowWidth: arrowWidth,
+      arrowHeight: arrowHeight,
+      customArrowOffset: customArrowOffset,
+    );
+
+    if (needsMeasurement) {
+      tooltipChild = _TooltipSizeReporter(
+        onSizeChange: (size) {
+          if (size == tooltipMeasuredSize.value) return;
+          tooltipMeasuredSize.value = size;
+        },
+        child: tooltipChild,
+      );
+    }
+
     _overlayEntry = OverlayEntry(
-      builder: (ctx) => Positioned(
-        left: tooltipPosition.dx,
-        top: tooltipPosition.dy,
-        child: _buildAnimatedTooltip(
-          context: ctx,
-          tooltipBuilder: tooltipBuilder,
-          animation: animation,
-          direction: direction,
-          tooltipContent: tooltipContent,
-          tooltipContentBuilder: tooltipContentBuilder,
-          tooltipColor: tooltipColor,
-          arrowDirection: arrowDirection,
-          tooltipSize: tooltipSize,
-          enableShadow: enableShadow,
-          shadowColor: shadowColor,
-          shadowElevation: shadowElevation,
-          shadowBlurRadius: shadowBlurRadius,
-          enableBorder: enableBorder,
-          borderColor: borderColor,
-          borderWidth: borderWidth,
-          borderRadius: borderRadius,
-          arrowWidth: arrowWidth,
-          arrowHeight: arrowHeight,
-          customArrowOffset: customArrowOffset,
-        ),
+      builder: (ctx) => ValueListenableBuilder<Size>(
+        valueListenable: tooltipMeasuredSize,
+        builder: (context, measuredSize, child) {
+          final Size effectiveSize = Size(
+            tooltipSize.width ?? measuredSize.width,
+            tooltipSize.height ?? measuredSize.height,
+          );
+          final tooltipPosition = _calculatePosition(
+            centerPosition,
+            direction,
+            tooltipSize,
+            effectiveSize,
+            screenSize,
+          );
+
+          return Positioned(
+            left: tooltipPosition.dx,
+            top: tooltipPosition.dy,
+            child: child!,
+          );
+        },
+        child: tooltipChild,
       ),
     );
 
@@ -159,34 +193,37 @@ class TooltipController {
     Offset targetCenter,
     TooltipDirection direction,
     TooltipSize size,
+    Size tooltipSize,
     Size screenSize,
   ) {
     double x, y;
+    final double width = tooltipSize.width;
+    final double height = tooltipSize.height;
 
     switch (direction) {
       case TooltipDirection.top:
-        x = targetCenter.dx - size.width / 2;
-        y = targetCenter.dy - size.height - size.spacing;
+        x = targetCenter.dx - width / 2;
+        y = targetCenter.dy - height - size.spacing;
         break;
       case TooltipDirection.bottom:
-        x = targetCenter.dx - size.width / 2;
+        x = targetCenter.dx - width / 2;
         y = targetCenter.dy + size.spacing;
         break;
       case TooltipDirection.left:
-        x = targetCenter.dx - size.width - size.spacing;
-        y = targetCenter.dy - size.height / 2;
+        x = targetCenter.dx - width - size.spacing;
+        y = targetCenter.dy - height / 2;
         break;
       case TooltipDirection.right:
         x = targetCenter.dx + size.spacing;
-        y = targetCenter.dy - size.height / 2;
+        y = targetCenter.dy - height / 2;
         break;
     }
 
     // Apply padding constraints
     final minX = size.horizontalPadding;
-    final maxX = screenSize.width - size.width - size.horizontalPadding;
+    final maxX = screenSize.width - width - size.horizontalPadding;
     final minY = size.verticalPadding;
-    final maxY = screenSize.height - size.height - size.verticalPadding;
+    final maxY = screenSize.height - height - size.verticalPadding;
 
     x = x.clamp(minX, maxX);
     y = y.clamp(minY, maxY);
@@ -310,5 +347,45 @@ class TooltipController {
       case TooltipAnimationCurve.easeOut:
         return Curves.easeOut;
     }
+  }
+}
+
+class _TooltipSizeReporter extends SingleChildRenderObjectWidget {
+  final ValueChanged<Size> onSizeChange;
+
+  const _TooltipSizeReporter({
+    required this.onSizeChange,
+    required Widget child,
+  }) : super(child: child);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return _TooltipSizeReporterRenderObject(onSizeChange);
+  }
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    covariant _TooltipSizeReporterRenderObject renderObject,
+  ) {
+    renderObject.onSizeChange = onSizeChange;
+  }
+}
+
+class _TooltipSizeReporterRenderObject extends RenderProxyBox {
+  _TooltipSizeReporterRenderObject(this.onSizeChange);
+
+  ValueChanged<Size> onSizeChange;
+  Size? _lastSize;
+
+  @override
+  void performLayout() {
+    super.performLayout();
+    final Size newSize = size;
+    if (_lastSize == newSize) return;
+    _lastSize = newSize;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onSizeChange(newSize);
+    });
   }
 }

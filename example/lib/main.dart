@@ -50,16 +50,15 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('You have pushed the button this many times:'),
-            TooltipPro.minimal(
-              autoDismiss: Duration(seconds: 3),
-              triggerMode: TooltipProTriggerMode.tap,
-              animation: TooltipAnimationConfig(
-                type: TooltipAnimationType.scale,
-                duration: Duration(milliseconds: 1000),
-                curve: TooltipAnimationCurve.easeOut,
+            TooltipPro(
+              // tooltipHeight: 200,
+              tooltipWidth: 180,
+              tooltipContent: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.network(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbqj9Ii13d6hx5a9kyLnC5A8A96LDSaSZv_w&s',
+                ),
               ),
-              showAtTapPosition: false,
-              text: "Counter: $_counter",
               child: Text(
                 '$_counter',
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -68,13 +67,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: TooltipPro.minimal(
+      floatingActionButton: TooltipPro(
         spacing: 30,
 
         arrowDirection: TooltipArrowDirection.left,
-        direction: TooltipDirection.bottom,
-        text: "Add Item",
-
+        direction: TooltipDirection.top,
+        tooltipContent: Text("Add Item"),
+        // text: "Add Item",
         border: TooltipBorderConfig(
           enabled: true,
           color: Colors.black,

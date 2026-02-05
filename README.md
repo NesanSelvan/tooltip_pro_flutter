@@ -192,8 +192,8 @@ TooltipPro(
 | `customArrowOffset`| `double` | `0.5` | Used when `arrowDirection` is `custom`. `0.0` to `1.0`. |
 | `arrowWidth` | `double` | `12.0` | Width of the arrow base. |
 | `arrowHeight` | `double` | `10.0` | Height (length) of the arrow. |
-| `tooltipHeight` | `double` | `50.0` | Fixed height of the tooltip. |
-| `tooltipWidth` | `double` | `50.0` | Fixed width of the tooltip. |
+| `tooltipHeight` | `double?` | `null` | Optional fixed height; defaults to content size. |
+| `tooltipWidth` | `double?` | `null` | Optional fixed width; defaults to content size. |
 | `animation` | `TooltipAnimationConfig` | `const` | Configure show animation type, duration, and curve. |
 | `spacing` | `double` | `10.0` | Gap between the target widget and the tooltip. |
 | `autoDismiss` | `Duration?` | `3s` | How long before it disappears. Set `null` to disable. |

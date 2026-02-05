@@ -3,8 +3,8 @@ import 'package:tooltip_pro/src/tooltip_enums.dart';
 import 'package:tooltip_pro/src/tooltip_painter.dart';
 
 class TooltipContent extends StatelessWidget {
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final TooltipArrowDirection arrowDirection;
   final TooltipDirection direction;
   final Color? tooltipColor;
@@ -23,8 +23,8 @@ class TooltipContent extends StatelessWidget {
 
   const TooltipContent({
     super.key,
-    required this.height,
-    required this.width,
+    this.height,
+    this.width,
     this.arrowDirection = TooltipArrowDirection.left,
     this.direction = TooltipDirection.top,
     this.tooltipColor,
@@ -87,7 +87,14 @@ class TooltipContent extends StatelessWidget {
           height: height,
           width: width,
           padding: padding,
-          child: content != null ? Center(child: content) : null,
+          child: content != null
+              ? Align(
+                  alignment: Alignment.center,
+                  widthFactor: 1.0,
+                  heightFactor: 1.0,
+                  child: content,
+                )
+              : null,
         ),
       ),
     );

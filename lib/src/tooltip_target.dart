@@ -11,8 +11,8 @@ class TooltipPro extends StatefulWidget {
 
   final double customArrowOffset;
   final Duration? autoDismiss;
-  final double tooltipHeight;
-  final double tooltipWidth;
+  final double? tooltipHeight;
+  final double? tooltipWidth;
   final double arrowWidth;
   final double arrowHeight;
 
@@ -42,8 +42,8 @@ class TooltipPro extends StatefulWidget {
     this.arrowDirection = TooltipArrowDirection.center,
     this.customArrowOffset = 0.5,
     this.autoDismiss = const Duration(seconds: 3),
-    this.tooltipHeight = 50,
-    this.tooltipWidth = 50,
+    this.tooltipHeight,
+    this.tooltipWidth,
     this.spacing = 10,
     this.horizontalPadding = 0,
     this.verticalPadding = 0,
@@ -71,8 +71,8 @@ class TooltipPro extends StatefulWidget {
     TooltipDirection direction = TooltipDirection.top,
     TooltipArrowDirection arrowDirection = TooltipArrowDirection.center,
     Duration? autoDismiss = const Duration(seconds: 3),
-    double tooltipHeight = 40,
-    double tooltipWidth = 100,
+    double? tooltipHeight,
+    double? tooltipWidth,
     double spacing = 10,
     double horizontalPadding = 0,
     double verticalPadding = 0,
@@ -132,8 +132,8 @@ class TooltipPro extends StatefulWidget {
     VoidCallback? onClose,
     TooltipArrowDirection arrowDirection = TooltipArrowDirection.center,
     Duration? autoDismiss = const Duration(seconds: 3),
-    double tooltipHeight = 90,
-    double tooltipWidth = 220,
+    double? tooltipHeight,
+    double? tooltipWidth,
     double spacing = 10,
     double horizontalPadding = 0,
     double verticalPadding = 0,
@@ -241,8 +241,8 @@ class TooltipPro extends StatefulWidget {
     TooltipDirection direction = TooltipDirection.bottom,
     TooltipArrowDirection arrowDirection = TooltipArrowDirection.left,
     Duration? autoDismiss = const Duration(seconds: 3),
-    double tooltipHeight = 60,
-    double tooltipWidth = 180,
+    double? tooltipHeight,
+    double? tooltipWidth,
     double spacing = 10,
     double horizontalPadding = 0,
     double verticalPadding = 0,
