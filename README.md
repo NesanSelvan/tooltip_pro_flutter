@@ -23,6 +23,7 @@ A powerful and flexible tooltip package for Flutter that goes beyond simple text
     *   **Shadows**: Color, elevation, and blur.
     *   **Glassmorphism**: Built-in background blur support.
 *   🏭 **Factory Constructors**: Built-in `minimal`, `rich`, and `error` factories for quick and beautiful presets.
+*   🎛️ **Programmatic Control**: Trigger `show()` and `hide()` using `TooltipProController`.
 *   ⏳ **Auto-dismiss**: Configurable auto-dismiss timer.
 
 ## Getting started
@@ -31,7 +32,7 @@ Add `tooltip_pro` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  tooltip_pro: ^0.0.5
+  tooltip_pro: ^0.0.11
 ```
 
 ## Usage
@@ -178,6 +179,24 @@ TooltipPro(
 )
 ```
 
+### 5. Programmatic Control
+Drive tooltips from external events using `TooltipProController`.
+
+```dart
+final controller = TooltipProController();
+
+TooltipPro.minimal(
+  controller: controller,
+  text: "Controlled tooltip",
+  child: const Icon(Icons.info_outline),
+)
+
+ElevatedButton(
+  onPressed: controller.show,
+  child: const Text("Show"),
+)
+```
+
 ## API Reference
 
 ### TooltipPro Properties
@@ -198,6 +217,7 @@ TooltipPro(
 | `spacing` | `double` | `10.0` | Gap between the target widget and the tooltip. |
 | `autoDismiss` | `Duration?` | `3s` | How long before it disappears. Set `null` to disable. |
 | `onPressed` | `VoidCallback?` | `null` | Additional callback when target is tapped. |
+| `controller` | `TooltipProController?` | `null` | Control tooltip show/hide programmatically. |
 | `border` | `TooltipBorderConfig` | `const` | Configure border color, width, radius. |
 | `shadow` | `TooltipShadowConfig` | `const` | Configure elevation and shadow color. |
 | `blur` | `TooltipBlurConfig` | `const` | Configure background blur (glassmorphism). |

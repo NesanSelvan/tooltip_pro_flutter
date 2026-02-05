@@ -1,3 +1,8 @@
+## 0.0.11
+
+* **Feature**: Added `TooltipProController` to show/hide tooltips programmatically.
+* **Docs**: Added controller usage example.
+
 ## 0.0.10
 
 * **Feature**: Tooltip size now defaults to dynamic content sizing when height/width are unset.
