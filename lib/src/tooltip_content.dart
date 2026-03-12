@@ -51,60 +51,63 @@ class TooltipContent extends StatelessWidget {
     EdgeInsets padding;
     switch (direction) {
       case TooltipDirection.top:
-        padding = const EdgeInsets.only(bottom: 10);
+        padding = EdgeInsets.only(bottom: caretHeight);
         break;
       case TooltipDirection.bottom:
-        padding = const EdgeInsets.only(top: 10);
+        padding = EdgeInsets.only(top: caretHeight);
         break;
       case TooltipDirection.left:
-        padding = const EdgeInsets.only(right: 10);
+        padding = EdgeInsets.only(right: caretHeight);
         break;
       case TooltipDirection.right:
-        padding = const EdgeInsets.only(left: 10);
+        padding = EdgeInsets.only(left: caretHeight);
         break;
     }
 
-    Widget child = Container(
+    final Widget child = Container(
       height: height,
       width: width,
       padding: padding,
       child: content != null
           ? Align(
               alignment: Alignment.center,
-              widthFactor: width == null ? null : 1.0,
-              heightFactor: height == null ? null : 1.0,
+              widthFactor: 1.0,
+              heightFactor: 1.0,
               child: content,
             )
           : null,
     );
 
-    if (width == null) {
-      child = IntrinsicWidth(child: child);
-    }
-    if (height == null) {
-      child = IntrinsicHeight(child: child);
-    }
-
     return Material(
       type: MaterialType.transparency,
-      child: CustomPaint(
-        painter: TooltipPainter(
-          color: effectiveColor,
+      child: ClipPath(
+        clipper: TooltipClipper(
           caretDirection: caretDirection,
           tooltipDirection: direction,
-          enableShadow: enableShadow,
-          shadowColor: effectiveShadowColor,
-          shadowElevation: shadowElevation,
-          shadowBlurRadius: shadowBlurRadius,
-          enableBorder: enableBorder,
-          borderColor: borderColor,
-          borderWidth: borderWidth,
           borderRadius: borderRadius,
           customCaretOffset: customCaretOffset,
           caretWidth: caretWidth,
           caretHeight: caretHeight,
         ),
-        child: child,
+        child: CustomPaint(
+          painter: TooltipPainter(
+            color: effectiveColor,
+            caretDirection: caretDirection,
+            tooltipDirection: direction,
+            enableShadow: enableShadow,
+            shadowColor: effectiveShadowColor,
+            shadowElevation: shadowElevation,
+            shadowBlurRadius: shadowBlurRadius,
+            enableBorder: enableBorder,
+            borderColor: borderColor,
+            borderWidth: borderWidth,
+            borderRadius: borderRadius,
+            customCaretOffset: customCaretOffset,
+            caretWidth: caretWidth,
+            caretHeight: caretHeight,
+          ),
+          child: child,
+        ),
       ),
     );
   }

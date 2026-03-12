@@ -21,6 +21,7 @@ class TooltipController {
   void show({
     required BuildContext context,
     required GlobalKey targetKey,
+    LayerLink? layerLink,
     TooltipDirection direction = TooltipDirection.top,
     TooltipCaretDirection caretDirection = TooltipCaretDirection.center,
     Color? tooltipColor,
@@ -55,10 +56,11 @@ class TooltipController {
     _dismissTimer?.cancel();
     _onDismiss = onDismiss;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    void showNow() {
       _showTooltipInternal(
         context: context,
         targetKey: targetKey,
+        layerLink: layerLink,
         direction: direction,
         caretDirection: caretDirection,
         tooltipColor: tooltipColor,
@@ -86,12 +88,21 @@ class TooltipController {
         caretHeight: caretHeight,
         touchPoint: touchPoint,
       );
-    });
+    }
+
+    final RenderBox? renderBox =
+        targetKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox != null && renderBox.hasSize) {
+      showNow();
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) => showNow());
+    }
   }
 
   void _showTooltipInternal({
     required BuildContext context,
     required GlobalKey targetKey,
+    required LayerLink? layerLink,
     required TooltipDirection direction,
     required TooltipCaretDirection caretDirection,
     required Color? tooltipColor,
@@ -125,17 +136,25 @@ class TooltipController {
         targetKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
 
-    final position = renderBox.localToGlobal(Offset.zero);
-    final targetSize = renderBox.size;
+    final overlayState = Overlay.of(context, rootOverlay: true);
+    final RenderBox overlayBox =
+        overlayState.context.findRenderObject() as RenderBox;
+    final topLeft = renderBox.localToGlobal(
+      Offset.zero,
+      ancestor: overlayBox,
+    );
+    final bottomRight = renderBox.localToGlobal(
+      Offset(renderBox.size.width, renderBox.size.height),
+      ancestor: overlayBox,
+    );
+    final targetRect = Rect.fromPoints(topLeft, bottomRight);
+    final position = targetRect.topLeft;
+    final targetSize = targetRect.size;
+    final targetCenter = targetRect.center;
 
-    final centerPosition =
-        touchPoint ??
-        Offset(
-          position.dx + targetSize.width / 2,
-          position.dy + targetSize.height / 2,
-        );
+    final centerPosition = touchPoint ?? targetCenter;
 
-    final screenSize = MediaQuery.of(context).size;
+    final screenSize = overlayBox.size;
 
     final ValueNotifier<Size> tooltipMeasuredSize = ValueNotifier(
       Size(tooltipSize.width ?? 0, tooltipSize.height ?? 0),
@@ -218,6 +237,26 @@ class TooltipController {
               !needsMeasurement ||
               (measuredSize.width > 0 && measuredSize.height > 0);
 
+          if (touchPoint == null && layerLink != null) {
+            final (targetAnchor, followerAnchor, offset) =
+                _resolveAnchor(direction, tooltipSize.spacing);
+            return Stack(
+              children: [
+                CompositedTransformFollower(
+                  link: layerLink,
+                  targetAnchor: targetAnchor,
+                  followerAnchor: followerAnchor,
+                  offset: offset,
+                  showWhenUnlinked: false,
+                  child: Opacity(
+                    opacity: needsMeasurement ? 1.0 : (hasMeasuredSize ? 1.0 : 0.0),
+                    child: child!,
+                  ),
+                ),
+              ],
+            );
+          }
+
           final tooltipPosition = _calculatePosition(
             centerPosition,
             direction,
@@ -237,6 +276,15 @@ class TooltipController {
     );
 
     Overlay.of(context).insert(_overlayEntry!);
+
+    // CompositedTransformFollower resolves its transform during the compositing
+    // phase, which occurs after the first frame is built. Force a second frame
+    // so the follower has the correct LayerLink transform on the first visible
+    // render, preventing the tooltip from appearing at an incorrect position
+    // until the user triggers a scroll/repaint.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _overlayEntry?.markNeedsBuild();
+    });
 
     if (autoDismiss != null) {
       _dismissTimer = Timer(autoDismiss, () {
@@ -415,6 +463,38 @@ class TooltipController {
         return Curves.easeIn;
       case TooltipAnimationCurve.easeOut:
         return Curves.easeOut;
+    }
+  }
+
+  (Alignment, Alignment, Offset) _resolveAnchor(
+    TooltipDirection direction,
+    double spacing,
+  ) {
+    switch (direction) {
+      case TooltipDirection.top:
+        return (
+          Alignment.topCenter,
+          Alignment.bottomCenter,
+          Offset(0, -spacing),
+        );
+      case TooltipDirection.bottom:
+        return (
+          Alignment.bottomCenter,
+          Alignment.topCenter,
+          Offset(0, spacing),
+        );
+      case TooltipDirection.left:
+        return (
+          Alignment.centerLeft,
+          Alignment.centerRight,
+          Offset(-spacing, 0),
+        );
+      case TooltipDirection.right:
+        return (
+          Alignment.centerRight,
+          Alignment.centerLeft,
+          Offset(spacing, 0),
+        );
     }
   }
 }

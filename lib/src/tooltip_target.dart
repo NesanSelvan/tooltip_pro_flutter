@@ -357,6 +357,7 @@ class TooltipProState extends State<TooltipPro> {
   final GlobalKey _targetKey = GlobalKey();
   late final TooltipController _tooltipController;
   Offset? _tapPosition;
+  final LayerLink _layerLink = LayerLink();
 
   bool get _isTooltipVisible => _tooltipController.isVisible;
 
@@ -392,6 +393,7 @@ class TooltipProState extends State<TooltipPro> {
     _tooltipController.show(
       context: context,
       targetKey: _targetKey,
+      layerLink: _layerLink,
       direction: widget.direction,
       caretDirection: widget.caretDirection,
       autoDismiss: fromHold ? null : widget.autoDismiss,
@@ -452,7 +454,7 @@ class TooltipProState extends State<TooltipPro> {
           : null,
       onLongPressEnd: supportsHold ? (_) => hideTooltip() : null,
       onLongPressCancel: supportsHold ? hideTooltip : null,
-      child: widget.child,
+      child: CompositedTransformTarget(link: _layerLink, child: widget.child),
     );
   }
 }
