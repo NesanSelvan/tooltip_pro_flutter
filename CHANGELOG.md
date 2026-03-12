@@ -1,3 +1,10 @@
+## 0.0.13
+
+* **Fix**: Anchored tooltips using composited layer links for stable positioning in release builds.
+* **Fix**: Improved tooltip visibility timing to avoid delayed display after scroll.
+* **Fix**: Updated caret padding and added tooltip clipping to prevent content overflow.
+* **Example**: Rebuilt the example showcase with a premium UI and modular files.
+
 ## 0.0.12
 
 * **Breaking**: Renamed arrow terminology to caret (`caretDirection`, `caretWidth`, `caretHeight`, `customCaretOffset`).
