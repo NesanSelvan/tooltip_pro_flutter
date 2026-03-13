@@ -1,3 +1,13 @@
+## 0.0.15
+
+* **Fix**: Blur background no longer affects the tooltip widget — tooltip and barrier are now inserted into the root overlay, above the `BackdropFilter` layer.
+* **Fix**: Child widget (trigger target) is also excluded from blur and re-rendered unblurred in the root overlay.
+* **Fix**: Child re-render in blur mode now wraps with `Directionality` and `DefaultTextStyle` from the original context, preventing yellow underlines in both Material and Cupertino apps.
+* **Fix**: `tooltipBuilder` result is now wrapped with `Material(type: MaterialType.transparency)` to prevent yellow text underlines when no Material ancestor is present.
+* **Fix**: `TooltipPro.minimal` now has default padding (`horizontal: 12, vertical: 8`) applied inside the package.
+* **Example**: Improved example UI with collapsing `SliverAppBar` hero header, warm off-white background, and redesigned `SectionCard` with icon badges.
+* **Example**: All tooltip content updated with icon + label rows for a richer visual showcase.
+
 ## 0.0.14
 
 * **Fix**: Tooltip now hides when the user swipes or touches anywhere outside the target widget.

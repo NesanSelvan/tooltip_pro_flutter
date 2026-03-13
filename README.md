@@ -4,9 +4,9 @@ A powerful and flexible tooltip package for Flutter that goes beyond simple text
 
 ## Preview
 
-| | | |
+| Directions | Custom Card & Tap Anywhere | Trigger Mode & Blur |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_1.gif" width="300" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_2.gif" width="300" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_3.gif" width="300" /> |
+| <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_1.gif" width="100%" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_2.gif" width="100%" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_3.gif" width="100%" /> |
 
 <p align="center">
   <a href="https://nutriscan.app/">
@@ -38,7 +38,7 @@ Add `tooltip_pro` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  tooltip_pro: ^0.0.12
+  tooltip_pro: ^0.0.15
 ```
 
 ## Usage
