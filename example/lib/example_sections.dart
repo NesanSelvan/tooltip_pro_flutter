@@ -3,30 +3,35 @@ import 'package:tooltip_pro/tooltip_pro.dart';
 
 import 'example_widgets.dart';
 
-const _premiumTooltipColor = Color(0xFF0B0B0C);
+const _tooltipBg = Color(0xFF0B0B0C);
+
 const _premiumBorder = TooltipBorderConfig(
   enabled: true,
   color: Color(0x22FFFFFF),
   width: 1,
   radius: 14,
 );
+
 const _premiumTextStyle = TextStyle(
   color: Colors.white,
   fontSize: 12.5,
   fontWeight: FontWeight.w600,
   height: 1.3,
-  letterSpacing: 0.2,
+  letterSpacing: 0.1,
 );
+
 const _subtleTextStyle = TextStyle(
-  color: Color(0xFFE5E7EB),
-  fontSize: 12,
-  height: 1.3,
+  color: Color(0xFFD1D5DB),
+  fontSize: 11.5,
+  height: 1.4,
 );
+
+const _accentColor = Color(0xFFF97316);
 
 final _premiumShadow = TooltipShadowConfig(
   enabled: true,
   color: const Color(0x66000000),
-  blurRadius: 18,
+  blurRadius: 20,
   elevation: 8,
 );
 
@@ -35,6 +40,30 @@ const _premiumAnimation = TooltipAnimationConfig(
   duration: Duration(milliseconds: 180),
   curve: TooltipAnimationCurve.easeOut,
 );
+
+// Helper: icon + label row used inside tooltips
+Widget _iconLabel(
+  IconData icon,
+  String text, {
+  Color iconColor = const Color(0xFF9CA3AF),
+}) {
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Icon(icon, size: 14, color: iconColor),
+      const SizedBox(width: 7),
+      Text(text, style: _premiumTextStyle),
+    ],
+  );
+}
+
+// Padded tooltip body
+Widget _tooltipBody(Widget content) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+    child: content,
+  );
+}
 
 Widget _premiumTooltip({
   required Widget child,
@@ -64,19 +93,20 @@ Widget _premiumTooltip({
     caretHeight: caretHeight,
     triggerMode: triggerMode,
     autoDismiss: autoDismiss,
-    tooltipColor: _premiumTooltipColor,
+    tooltipColor: _tooltipBg,
     border: _premiumBorder,
     shadow: _premiumShadow,
     animation: animation ?? _premiumAnimation,
     blur: blur,
     showAtTapPosition: showAtTapPosition,
-    tooltipContent: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      child: content,
-    ),
+    tooltipContent: _tooltipBody(content),
     child: child,
   );
 }
+
+// ──────────────────────────────────────────
+// Sections
+// ──────────────────────────────────────────
 
 class FactorySection extends StatelessWidget {
   const FactorySection({super.key});
@@ -88,7 +118,7 @@ class FactorySection extends StatelessWidget {
         TooltipPro.minimal(
           text: 'Minimal tooltip',
           tooltipWidth: 150,
-          tooltipColor: _premiumTooltipColor,
+          tooltipColor: _tooltipBg,
           border: _premiumBorder,
           shadow: _premiumShadow,
           animation: _premiumAnimation,
@@ -144,27 +174,27 @@ class DirectionsSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('Right aligned', style: _premiumTextStyle),
+          content: _iconLabel(Icons.arrow_forward_rounded, 'Points right'),
           direction: TooltipDirection.right,
-          width: 140,
+          width: 155,
           child: const DemoPill('Right'),
         ),
         _premiumTooltip(
-          content: const Text('Above the target', style: _premiumTextStyle),
+          content: _iconLabel(Icons.arrow_upward_rounded, 'Above target'),
           direction: TooltipDirection.top,
-          width: 160,
+          width: 150,
           child: const DemoPill('Top'),
         ),
         _premiumTooltip(
-          content: const Text('Below the target', style: _premiumTextStyle),
+          content: _iconLabel(Icons.arrow_downward_rounded, 'Below target'),
           direction: TooltipDirection.bottom,
-          width: 160,
+          width: 150,
           child: const DemoPill('Bottom'),
         ),
         _premiumTooltip(
-          content: const Text('Left aligned', style: _premiumTextStyle),
+          content: _iconLabel(Icons.arrow_back_rounded, 'Points left'),
           direction: TooltipDirection.left,
-          width: 140,
+          width: 145,
           child: const DemoPill('Left'),
         ),
       ],
@@ -180,34 +210,46 @@ class CaretSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('Caret on left', style: _premiumTextStyle),
+          content: _iconLabel(
+            Icons.align_horizontal_left_rounded,
+            'Caret on left',
+          ),
           caretDirection: TooltipCaretDirection.left,
-          width: 150,
+          width: 160,
           child: const DemoPill('Caret Left'),
         ),
         _premiumTooltip(
-          content: const Text('Caret centered', style: _premiumTextStyle),
+          content: _iconLabel(
+            Icons.align_horizontal_center_rounded,
+            'Caret centered',
+          ),
           caretDirection: TooltipCaretDirection.center,
-          width: 150,
+          width: 165,
           child: const DemoPill('Caret Center'),
         ),
         _premiumTooltip(
-          content: const Text('Caret on right', style: _premiumTextStyle),
+          content: _iconLabel(
+            Icons.align_horizontal_right_rounded,
+            'Caret on right',
+          ),
           caretDirection: TooltipCaretDirection.right,
-          width: 150,
+          width: 162,
           child: const DemoPill('Caret Right'),
         ),
         _premiumTooltip(
-          content: const Text('No caret', style: _premiumTextStyle),
+          content: _iconLabel(
+            Icons.remove_circle_outline_rounded,
+            'No caret shown',
+          ),
           caretDirection: TooltipCaretDirection.none,
-          width: 120,
+          width: 155,
           child: const DemoPill('No Caret'),
         ),
         _premiumTooltip(
-          content: const Text('Custom 30%', style: _premiumTextStyle),
+          content: _iconLabel(Icons.tune_rounded, 'Offset at 30%'),
           caretDirection: TooltipCaretDirection.custom,
           customCaretOffset: 0.3,
-          width: 140,
+          width: 148,
           child: const DemoPill('Custom Offset'),
         ),
       ],
@@ -223,8 +265,8 @@ class AnimationsSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('No animation', style: _premiumTextStyle),
-          width: 140,
+          content: _iconLabel(Icons.block_rounded, 'No animation'),
+          width: 150,
           animation: const TooltipAnimationConfig(
             type: TooltipAnimationType.none,
           ),
@@ -233,8 +275,8 @@ class AnimationsSection extends StatelessWidget {
           spacing: 10,
         ),
         _premiumTooltip(
-          content: const Text('Fade', style: _premiumTextStyle),
-          width: 100,
+          content: _iconLabel(Icons.opacity_rounded, 'Fades in & out'),
+          width: 155,
           animation: const TooltipAnimationConfig(
             type: TooltipAnimationType.fade,
             duration: Duration(milliseconds: 220),
@@ -242,8 +284,8 @@ class AnimationsSection extends StatelessWidget {
           child: const DemoPill('Fade'),
         ),
         _premiumTooltip(
-          content: const Text('Scale', style: _premiumTextStyle),
-          width: 100,
+          content: _iconLabel(Icons.zoom_in_rounded, 'Scales in & out'),
+          width: 155,
           animation: const TooltipAnimationConfig(
             type: TooltipAnimationType.scale,
             duration: Duration(milliseconds: 220),
@@ -251,8 +293,8 @@ class AnimationsSection extends StatelessWidget {
           child: const DemoPill('Scale'),
         ),
         _premiumTooltip(
-          content: const Text('Fade + Scale', style: _premiumTextStyle),
-          width: 140,
+          content: _iconLabel(Icons.filter_rounded, 'Fade + scale combo'),
+          width: 168,
           animation: const TooltipAnimationConfig(
             type: TooltipAnimationType.fadeScale,
             duration: Duration(milliseconds: 240),
@@ -260,8 +302,8 @@ class AnimationsSection extends StatelessWidget {
           child: const DemoPill('FadeScale'),
         ),
         _premiumTooltip(
-          content: const Text('Slide', style: _premiumTextStyle),
-          width: 100,
+          content: _iconLabel(Icons.swap_vert_rounded, 'Slides into view'),
+          width: 158,
           animation: const TooltipAnimationConfig(
             type: TooltipAnimationType.slide,
             duration: Duration(milliseconds: 240),
@@ -281,22 +323,22 @@ class TriggerSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('Tap to show', style: _premiumTextStyle),
+          content: _iconLabel(Icons.touch_app_rounded, 'Tap to show'),
           triggerMode: TooltipProTriggerMode.tap,
-          width: 120,
+          width: 140,
           child: const DemoPill('Tap'),
         ),
         _premiumTooltip(
-          content: const Text('Hold to show', style: _premiumTextStyle),
+          content: _iconLabel(Icons.pan_tool_alt_rounded, 'Hold to show'),
           triggerMode: TooltipProTriggerMode.hold,
-          width: 120,
+          width: 140,
           autoDismiss: null,
           child: const DemoPill('Hold'),
         ),
         _premiumTooltip(
-          content: const Text('Tap or hold', style: _premiumTextStyle),
+          content: _iconLabel(Icons.gesture_rounded, 'Tap or hold'),
           triggerMode: TooltipProTriggerMode.tapAndHold,
-          width: 130,
+          width: 140,
           child: const DemoPill('Tap & Hold'),
         ),
       ],
@@ -312,37 +354,37 @@ class BorderShadowSection extends StatelessWidget {
     return DemoRow(
       children: [
         TooltipPro(
-          tooltipContent: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Text('Subtle border', style: _premiumTextStyle),
+          tooltipContent: _tooltipBody(
+            _iconLabel(Icons.border_style_rounded, 'Subtle border'),
           ),
-          tooltipColor: _premiumTooltipColor,
+          tooltipColor: _tooltipBg,
           border: _premiumBorder,
           shadow: _premiumShadow,
-          tooltipWidth: 150,
+          animation: _premiumAnimation,
+          tooltipWidth: 162,
           child: const DemoPill('Border'),
         ),
         TooltipPro(
-          tooltipContent: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Text('Deep shadow', style: _premiumTextStyle),
+          tooltipContent: _tooltipBody(
+            _iconLabel(Icons.layers_rounded, 'Deep shadow'),
           ),
-          tooltipColor: _premiumTooltipColor,
+          tooltipColor: _tooltipBg,
+          animation: _premiumAnimation,
           shadow: TooltipShadowConfig(
             enabled: true,
             color: const Color(0x66000000),
-            blurRadius: 22,
-            elevation: 12,
+            blurRadius: 24,
+            elevation: 14,
           ),
           tooltipWidth: 150,
           child: const DemoPill('Shadow'),
         ),
         TooltipPro(
-          tooltipContent: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Text('Pill shape', style: _premiumTextStyle),
+          tooltipContent: _tooltipBody(
+            _iconLabel(Icons.circle_outlined, 'Pill shape'),
           ),
-          tooltipColor: _premiumTooltipColor,
+          tooltipColor: _tooltipBg,
+          animation: _premiumAnimation,
           border: const TooltipBorderConfig(
             enabled: true,
             color: Color(0x33FFFFFF),
@@ -354,11 +396,11 @@ class BorderShadowSection extends StatelessWidget {
           child: const DemoPill('Pill'),
         ),
         TooltipPro(
-          tooltipContent: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Text('Glass style', style: _premiumTextStyle),
+          tooltipContent: _tooltipBody(
+            _iconLabel(Icons.blur_circular_rounded, 'Glass style'),
           ),
           tooltipColor: const Color(0xCC111827),
+          animation: _premiumAnimation,
           border: const TooltipBorderConfig(
             enabled: true,
             color: Color(0x44FFFFFF),
@@ -371,7 +413,7 @@ class BorderShadowSection extends StatelessWidget {
             blurRadius: 20,
             elevation: 10,
           ),
-          tooltipWidth: 150,
+          tooltipWidth: 148,
           child: const DemoPill('Glass'),
         ),
       ],
@@ -387,14 +429,13 @@ class BlurSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('Soft blur backdrop', style: _premiumTextStyle),
+          content: _iconLabel(Icons.blur_on_rounded, 'Blurred backdrop'),
           blur: const TooltipBlurConfig(
             enabled: true,
             sigma: 8,
-            includeChild: true,
             color: Color(0x22000000),
           ),
-          width: 170,
+          width: 168,
           child: const DemoPill('Blurred'),
         ),
       ],
@@ -410,17 +451,17 @@ class CaretSizeSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('Compact caret', style: _premiumTextStyle),
+          content: _iconLabel(Icons.zoom_out_rounded, 'Compact caret'),
           caretWidth: 10,
           caretHeight: 6,
-          width: 140,
+          width: 158,
           child: const DemoPill('Compact'),
         ),
         _premiumTooltip(
-          content: const Text('Large caret', style: _premiumTextStyle),
+          content: _iconLabel(Icons.zoom_in_rounded, 'Large caret'),
           caretWidth: 22,
           caretHeight: 16,
-          width: 140,
+          width: 145,
           child: const DemoPill('Large'),
         ),
       ],
@@ -436,14 +477,17 @@ class AutoDismissSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('Auto dismiss in 2s', style: _premiumTextStyle),
-          width: 180,
+          content: _iconLabel(Icons.timer_rounded, 'Hides after 2s'),
+          width: 165,
           autoDismiss: const Duration(seconds: 2),
           child: const DemoPill('2s'),
         ),
         _premiumTooltip(
-          content: const Text('Persistent tooltip', style: _premiumTextStyle),
-          width: 160,
+          content: _iconLabel(
+            Icons.all_inclusive_rounded,
+            'Stays until dismissed',
+          ),
+          width: 195,
           autoDismiss: null,
           child: const DemoPill('Persistent'),
         ),
@@ -460,10 +504,10 @@ class TapPositionSection extends StatelessWidget {
     return DemoRow(
       children: [
         _premiumTooltip(
-          content: const Text('Shows at tap point', style: _premiumTextStyle),
+          content: _iconLabel(Icons.ads_click_rounded, 'Follows tap point'),
           width: 170,
           showAtTapPosition: true,
-          child: const DemoPill('Tap me'),
+          child: const DemoPill('Tap anywhere'),
         ),
       ],
     );
@@ -478,9 +522,9 @@ class CustomContentSection extends StatelessWidget {
     return DemoRow(
       children: [
         TooltipPro(
-          tooltipWidth: 220,
-          tooltipHeight: 240,
-          tooltipColor: _premiumTooltipColor,
+          tooltipWidth: 230,
+          tooltipHeight: 250,
+          tooltipColor: _tooltipBg,
           border: _premiumBorder,
           shadow: _premiumShadow,
           animation: _premiumAnimation,
@@ -489,7 +533,24 @@ class CustomContentSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Weekly nutrition', style: _premiumTextStyle),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1C1C1E),
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: const Icon(
+                        Icons.restaurant_rounded,
+                        size: 13,
+                        color: _accentColor,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('Weekly nutrition', style: _premiumTextStyle),
+                  ],
+                ),
                 const SizedBox(height: 6),
                 const Text(
                   'Scan labels to auto-calculate daily macros.',
@@ -523,18 +584,17 @@ class TooltipBuilderSection extends StatelessWidget {
     return DemoRow(
       children: [
         TooltipPro(
-          tooltipWidth: 200,
+          tooltipWidth: 210,
           tooltipBuilder: (context, hide) {
             return Container(
-              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: _premiumTooltipColor,
+                color: _tooltipBg,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: const Color(0x22FFFFFF)),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x55000000),
-                    blurRadius: 16,
+                    blurRadius: 18,
                     offset: Offset(0, 8),
                   ),
                 ],
@@ -543,16 +603,50 @@ class TooltipBuilderSection extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Builder tooltip', style: _premiumTextStyle),
-                  const SizedBox(height: 6),
-                  const Text(
-                    'Custom layouts with buttons and actions.',
-                    style: _subtleTextStyle,
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(14, 12, 14, 10),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF111111),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(15),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1C1C1E),
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                          child: const Icon(
+                            Icons.dashboard_customize_rounded,
+                            size: 13,
+                            color: _accentColor,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text('Builder tooltip', style: _premiumTextStyle),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  OrangeFilledButton(
-                    onPressed: hide,
-                    child: const Text('Got it'),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 10, 14, 14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Custom layouts with buttons and actions.',
+                          style: _subtleTextStyle,
+                        ),
+                        const SizedBox(height: 12),
+                        OrangeFilledButton(
+                          onPressed: hide,
+                          child: const Text('Got it'),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -581,16 +675,44 @@ class _ControllerSectionState extends State<ControllerSection> {
       children: [
         TooltipPro(
           controller: _controller,
-          tooltipWidth: 180,
-          tooltipColor: _premiumTooltipColor,
+          tooltipWidth: 210,
+          tooltipColor: _tooltipBg,
           border: _premiumBorder,
           shadow: _premiumShadow,
           animation: _premiumAnimation,
-          tooltipContent: const Padding(
-            padding: EdgeInsets.all(12),
-            child: Text('Controlled tooltip', style: _premiumTextStyle),
+          tooltipContent: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1C1C1E),
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      child: const Icon(
+                        Icons.tune_rounded,
+                        size: 13,
+                        color: _accentColor,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('Controller', style: _premiumTextStyle),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Driven by TooltipProController.',
+                  style: _subtleTextStyle,
+                ),
+              ],
+            ),
           ),
-          child: const DemoPill('Controller', icon: Icons.tune),
+          child: const DemoPill('Target', icon: Icons.tune),
         ),
         OrangeFilledButton(
           onPressed: _controller.show,

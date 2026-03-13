@@ -164,7 +164,13 @@ class TooltipController {
     final bool needsMeasurement =
         tooltipSize.width == null || tooltipSize.height == null;
 
+    final rootOverlay = Overlay.of(context, rootOverlay: true);
+
     if (blurBackground) {
+      // Blur lives in the local overlay so it blurs the app content beneath.
+      // The child re-render, tooltip, and barrier are all inserted into the
+      // root overlay (below), which sits above the local overlay and is
+      // therefore unaffected by this BackdropFilter.
       _backgroundEntry = OverlayEntry(
         builder: (context) => Positioned.fill(
           child: BackdropFilter(
@@ -178,16 +184,26 @@ class TooltipController {
       Overlay.of(context).insert(_backgroundEntry!);
 
       if (excludeChildFromBlur && childWidget != null) {
+        final textDirection = Directionality.of(context);
+        final textStyle = DefaultTextStyle.of(context).style;
         _childEntry = OverlayEntry(
-          builder: (context) => Positioned(
+          builder: (_) => Positioned(
             left: position.dx,
             top: position.dy,
             width: targetSize.width,
             height: targetSize.height,
-            child: childWidget,
+            child: Directionality(
+              textDirection: textDirection,
+              child: DefaultTextStyle(
+                style: textStyle,
+                child: childWidget,
+              ),
+            ),
           ),
         );
-        Overlay.of(context).insert(_childEntry!);
+        // Insert child into root overlay BEFORE barrier so it is visually
+        // above the blur but below the tap-dismiss barrier and tooltip.
+        rootOverlay.insert(_childEntry!);
       }
     }
 
@@ -283,8 +299,12 @@ class TooltipController {
         child: const SizedBox.expand(),
       ),
     );
-    Overlay.of(context).insert(_barrierEntry!);
-    Overlay.of(context).insert(_overlayEntry!);
+
+    // Insert barrier and tooltip into the root overlay so they always render
+    // above any BackdropFilter blur entries (which live in the local overlay).
+    // This prevents the blur from being applied to the tooltip widget itself.
+    rootOverlay.insert(_barrierEntry!);
+    rootOverlay.insert(_overlayEntry!);
 
     // CompositedTransformFollower resolves its transform during the compositing
     // phase, which occurs after the first frame is built. Force a second frame
@@ -388,7 +408,10 @@ class TooltipController {
     required Color? tooltipColor,
   }) {
     final Widget content = tooltipBuilder != null
-        ? tooltipBuilder(context, hide)
+        ? Material(
+            type: MaterialType.transparency,
+            child: tooltipBuilder(context, hide),
+          )
         : TooltipContent(
             tooltipColor: tooltipColor,
             caretDirection: caretDirection,

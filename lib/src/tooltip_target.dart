@@ -136,10 +136,13 @@ class TooltipPro extends StatefulWidget {
       blur: blur,
       border: border ?? const TooltipBorderConfig(radius: 4),
       animation: animation,
-      tooltipContent: Text(
-        text,
-        style: const TextStyle(color: Colors.white, fontSize: 12),
-        textAlign: TextAlign.center,
+      tooltipContent: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white, fontSize: 12),
+          textAlign: TextAlign.center,
+        ),
       ),
       shadow:
           shadow ??

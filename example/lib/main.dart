@@ -1,7 +1,6 @@
-import 'package:example/examples_home.dart';
 import 'package:flutter/material.dart';
 
-import 'tooltip_pro_app.dart';
+import 'examples_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +11,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: TooltipProApp());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'tooltip_plus',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFF97316),
+          brightness: Brightness.light,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF4F3F1),
+        cardTheme: const CardThemeData(
+          color: Colors.white,
+          surfaceTintColor: Colors.transparent,
+        ),
+      ),
+      home: const ExamplesHome(),
+    );
   }
 }

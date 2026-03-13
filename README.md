@@ -2,11 +2,17 @@
 
 A powerful and flexible tooltip package for Flutter that goes beyond simple text. Create beautiful, highly customizable tooltips with rich content, shadows, blurs, and precise control over positioning and styling.
 
-🚀 **See it in action:** Used in [NutriScan](https://nutriscan.app/)
+## Preview
 
 | | | |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/tooltip_demo.jpeg" width="300" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_3.jpeg" width="300" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_4.jpeg" width="300" /> |
+| <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_1.gif" width="300" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_2.gif" width="300" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_3.gif" width="300" /> |
+
+<p align="center">
+  <a href="https://nutriscan.app/">
+    <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/download-banner.png" alt="Download NutriScan" width="100%" height="150"/>
+  </a>
+</p>
 
 ## Features
 
@@ -262,3 +268,23 @@ TooltipAnimationConfig({
   TooltipAnimationCurve curve = TooltipAnimationCurve.easeOut,
 })
 ```
+
+## 🌟 Built By
+
+Enjoyed this package? Check out the app we built it for 🚀
+
+<p align="center">
+  <a href="https://nutriscan.app/">
+    <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/download-banner.png" alt="Download NutriScan" width="100%" height="150"/>
+  </a>
+</p>
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you'd like to change.
+
+## 📄 License
+
+[MIT](LICENSE)
+
+
