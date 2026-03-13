@@ -8,12 +8,6 @@ A powerful and flexible tooltip package for Flutter that goes beyond simple text
 |:---:|:---:|:---:|
 | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_1.gif" width="100%" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_2.gif" width="100%" /> | <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/demo_recording_3.gif" width="100%" /> |
 
-<p align="center">
-  <a href="https://nutriscan.app/">
-    <img src="https://raw.githubusercontent.com/NesanSelvan/tooltip_pro_flutter/main/screenshots/download-banner.png" alt="Download NutriScan" width="100%" height="150"/>
-  </a>
-</p>
-
 ## Features
 
 *   ✨ **Rich Content Support**: Create tooltips with titles, descriptions, icons, or any custom widget.
