@@ -11,6 +11,7 @@ class TooltipController {
   OverlayEntry? _backgroundEntry;
   OverlayEntry? _childEntry;
   OverlayEntry? _overlayEntry;
+  OverlayEntry? _barrierEntry;
   VoidCallback? _onDismiss;
   Timer? _dismissTimer;
 
@@ -275,6 +276,14 @@ class TooltipController {
       ),
     );
 
+    _barrierEntry = OverlayEntry(
+      builder: (context) => Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => hide(),
+        child: const SizedBox.expand(),
+      ),
+    );
+    Overlay.of(context).insert(_barrierEntry!);
     Overlay.of(context).insert(_overlayEntry!);
 
     // CompositedTransformFollower resolves its transform during the compositing
@@ -300,6 +309,8 @@ class TooltipController {
     _backgroundEntry = null;
     _childEntry?.remove();
     _childEntry = null;
+    _barrierEntry?.remove();
+    _barrierEntry = null;
     _overlayEntry?.remove();
     _overlayEntry = null;
     _onDismiss?.call();

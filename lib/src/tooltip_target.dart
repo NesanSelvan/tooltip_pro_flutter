@@ -358,6 +358,7 @@ class TooltipProState extends State<TooltipPro> {
   late final TooltipController _tooltipController;
   Offset? _tapPosition;
   final LayerLink _layerLink = LayerLink();
+  ModalRoute<dynamic>? _currentRoute;
 
   bool get _isTooltipVisible => _tooltipController.isVisible;
 
@@ -366,6 +367,23 @@ class TooltipProState extends State<TooltipPro> {
     super.initState();
     _tooltipController = TooltipController();
     widget.controller?._attach(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route != _currentRoute) {
+      _currentRoute?.animation?.removeListener(_onRouteAnimationChange);
+      _currentRoute = route;
+      _currentRoute?.animation?.addListener(_onRouteAnimationChange);
+    }
+  }
+
+  void _onRouteAnimationChange() {
+    if (_currentRoute?.animation?.status == AnimationStatus.reverse) {
+      hideTooltip();
+    }
   }
 
   @override
@@ -379,6 +397,7 @@ class TooltipProState extends State<TooltipPro> {
 
   @override
   void dispose() {
+    _currentRoute?.animation?.removeListener(_onRouteAnimationChange);
     widget.controller?._detach(this);
     _tooltipController.dispose();
     super.dispose();
