@@ -1,3 +1,8 @@
+## 0.0.14
+
+* **Fix**: Tooltip now hides when the user swipes or touches anywhere outside the target widget.
+* **Fix**: Tooltip now hides on back button press or iOS swipe-back gesture.
+
 ## 0.0.13
 
 * **Fix**: Anchored tooltips using composited layer links for stable positioning in release builds.
